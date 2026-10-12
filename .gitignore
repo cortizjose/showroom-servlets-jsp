@@ -1,0 +1,25 @@
+# Resultado de la compilacion: se regenera con compilar.bat
+/build/
+*.class
+
+# Empaquetado
+*.war
+
+# Configuracion local con credenciales reales.
+# Se versiona configuracion.properties.example, no el archivo en uso con
+# credenciales de produccion.
+src/main/resources/configuracion.local.properties
+
+# Editores e IDE
+.idea/
+.vscode/
+*.iml
+nbproject/private/
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Registros
+*.log
