@@ -61,7 +61,30 @@ una sustentación.
 
 ## Bloque 3 — Recorrido por el código (2:00 – 4:30)
 
-Abrir **VS Code** en la carpeta del proyecto. Mostrar el árbol de carpetas.
+> **Esta es la parte que el instructor espera ver:** las clases Java a la vista
+> en el IDE y la aplicación corriendo sobre Tomcat. El recorrido de abajo lo
+> hace archivo por archivo.
+
+**Equivalencias con la estructura vista en la formación.** Si conviene decirlo
+en voz alta: *«es la misma estructura de modelo, DAO, servlet y JSP, con los
+mismos roles por archivo»*.
+
+| Estructura del ejemplo de clase | En este proyecto | Qué hace |
+|---|---|---|
+| `Producto.java` (paquete `modelo`) | `Cliente.java`, `Producto.java`, `Cotizacion.java` (paquete `modelo`) | Las entidades del negocio |
+| `ProductoDAO.java` | `ClienteDAO.java`, `ProductoDAO.java`, `CotizacionDAO.java` | Todo el acceso a datos |
+| `Conexion.java` | `ConexionBD.java` | La conexión JDBC |
+| `ProductoServlet.java` | `ClienteServlet.java`, `ProductoServlet.java`, `CotizacionServlet.java` | Atienden las peticiones HTTP |
+| `index.jsp`, `productos.jsp`, `editar.jsp` | `login.jsp` y 12 vistas en `WEB-INF/vistas/` | Las vistas |
+| `estilos.css` | `recursos/estilos.css` | La presentación |
+| `ProductoServlet?accion=editar&id=N` | `/clientes?accion=editar&id=1` | **El mismo patrón de rutas** |
+
+**Tres cosas que este proyecto agrega** y que conviene mencionar sin alardear:
+autenticación con sesión y dos roles, una transacción para guardar la
+cotización con su detalle, y los totales calculados en el servidor.
+
+Abrir el proyecto en el editor (VS Code o el IDE que prefiera) y mostrar el
+árbol de carpetas.
 
 | Qué hago | Qué digo |
 |---|---|
@@ -77,6 +100,7 @@ Abrir **VS Code** en la carpeta del proyecto. Mostrar el árbol de carpetas.
 | Abrir **`CotizacionServlet.java`**, método `armarLineas`. | «Esta es la regla más importante del módulo. Del formulario tomo **qué** producto y **cuántas** unidades. El **precio** lo busco yo en el catálogo. Si aceptara el precio que manda el navegador, cualquiera cotizaría un sofá en mil pesos editando el HTML antes de enviarlo. Lo voy a probar en vivo.» |
 | Abrir **`vistas/cotizaciones/detalle.jsp`**. | «Y estas son las vistas, en JSP. Uso JSTL y lenguaje de expresiones: `c:forEach` para recorrer las listas, `fmt:formatNumber` para los montos y `c:out` para imprimir los datos del usuario, que es el que los escapa.» |
 | Señalar la carpeta `WEB-INF/vistas`. | «Están dentro de `WEB-INF` a propósito: todo lo que está ahí es inalcanzable escribiendo su dirección en el navegador. Nadie puede abrir una vista sin pasar por el servlet que carga sus datos y verifica la sesión.» |
+| Volver al navegador y señalar una URL como `/clientes?accion=editar&id=1`. | «Y fíjense en la forma de las direcciones: un servlet y un parámetro `accion`. Es el patrón que vimos en la formación, solo que aquí cada operación además verifica la sesión y el rol antes de ejecutarse.» |
 
 ---
 
