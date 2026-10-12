@@ -1,0 +1,120 @@
+package co.edu.sena.showroom.servlets;
+
+import co.edu.sena.showroom.dao.UsuarioDAO;
+import co.edu.sena.showroom.modelo.Usuario;
+import co.edu.sena.showroom.util.Validador;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
+
+/**
+ * Servlet de inicio de sesion.
+ *
+ * Muestra con dos metodos HTTP la diferencia que pide la evidencia:
+ *
+ *   doGet  -> MUESTRA el formulario. Es una consulta: no cambia nada en el
+ *             servidor y se puede repetir sin consecuencias.
+ *   doPost -> PROCESA el formulario. Modifica estado (crea la sesion) y los
+ *             datos viajan en el cuerpo de la peticion, no en la URL.
+ *
+ * Por que el login debe ser POST y nunca GET: con GET, la contrasena quedaria
+ * escrita en la barra de direcciones, en el historial del navegador y en los
+ * registros del servidor.
+ *
+ * @author Jose Cortes
+ */
+public class LoginServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+
+    private UsuarioDAO usuarioDAO;
+
+    /**
+     * init() se ejecuta UNA sola vez, cuando Tomcat crea el servlet. Es el
+     * lugar para preparar recursos que se reutilizan en todas las peticiones.
+     * Crear el DAO en cada doPost seria desperdicio.
+     */
+    @Override
+    public void init() throws ServletException {
+        this.usuarioDAO = new UsuarioDAO();
+    }
+
+    /** GET /login : muestra el formulario. */
+    @Override
+    protected void doGet(HttpServletRequest peticion, HttpServletResponse respuesta)
+            throws ServletException, IOException {
+
+        // Si ya hay sesion activa, no tiene sentido pedir las credenciales otra vez.
+        HttpSession sesion = peticion.getSession(false);
+        if (sesion != null && sesion.getAttribute("usuario") != null) {
+            respuesta.sendRedirect(peticion.getContextPath() + "/tablero");
+            return;
+        }
+
+        peticion.getRequestDispatcher("/login.jsp").forward(peticion, respuesta);
+    }
+
+    /** POST /login : valida las credenciales y abre la sesion. */
+    @Override
+    protected void doPost(HttpServletRequest peticion, HttpServletResponse respuesta)
+            throws ServletException, IOException {
+
+        String nombreUsuario = Validador.limpiar(peticion.getParameter("usuario"));
+        String contrasena = peticion.getParameter("contrasena");
+
+        if (nombreUsuario.isEmpty() || contrasena == null || contrasena.isEmpty()) {
+            reenviarConError(peticion, respuesta, "Debe indicar el usuario y la contrasena.", nombreUsuario);
+            return;
+        }
+
+        try {
+            Usuario usuario = this.usuarioDAO.autenticar(nombreUsuario, contrasena);
+
+            if (usuario == null) {
+                // Un unico mensaje para "no existe" y para "clave incorrecta".
+                // Mensajes distintos permitirian averiguar que usuarios existen.
+                reenviarConError(peticion, respuesta,
+                        "Usuario o contrasena incorrectos.", nombreUsuario);
+                return;
+            }
+
+            // Sesion nueva despues de autenticar: evita la fijacion de sesion,
+            // donde un atacante hace que la victima use un identificador que el
+            // ya conoce.
+            HttpSession anterior = peticion.getSession(false);
+            if (anterior != null) {
+                anterior.invalidate();
+            }
+            HttpSession sesion = peticion.getSession(true);
+            sesion.setAttribute("usuario", usuario);
+            sesion.setMaxInactiveInterval(30 * 60); // 30 minutos de inactividad
+
+            this.usuarioDAO.registrarIngreso(usuario.getId());
+
+            // Redireccion y no forward: asi la URL del navegador queda en
+            // /tablero. Si se hiciera forward, al recargar la pagina el
+            // navegador reenviaria el POST con la contrasena.
+            respuesta.sendRedirect(peticion.getContextPath() + "/tablero");
+
+        } catch (SQLException e) {
+            throw new ServletException("Error al consultar el usuario en la base de datos.", e);
+        }
+    }
+
+    private void reenviarConError(HttpServletRequest peticion, HttpServletResponse respuesta,
+                                  String mensaje, String usuarioIngresado)
+            throws ServletException, IOException {
+
+        peticion.setAttribute("error", mensaje);
+        // Se devuelve el usuario escrito para que no tenga que teclearlo de
+        // nuevo. La contrasena NO se devuelve nunca.
+        peticion.setAttribute("usuarioIngresado", usuarioIngresado);
+        respuesta.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        peticion.getRequestDispatcher("/login.jsp").forward(peticion, respuesta);
+    }
+}
