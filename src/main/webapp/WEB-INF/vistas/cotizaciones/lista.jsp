@@ -33,7 +33,20 @@
 
 <c:choose>
     <c:when test="${empty cotizaciones}">
-        <p class="vacio">No hay cotizaciones que coincidan con el filtro.</p>
+        <p class="vacio">
+            <%-- El mensaje cambia segun haya o no un filtro aplicado: decirle
+                 "no coincide con el filtro" a quien no filtro nada confunde. --%>
+            <c:choose>
+                <c:when test="${not empty estadoSeleccionado}">
+                    Ninguna cotizaci&oacute;n est&aacute; en estado
+                    &laquo;<c:out value="${estadoSeleccionado}" />&raquo;.
+                </c:when>
+                <c:otherwise>
+                    A&uacute;n no hay cotizaciones registradas.
+                    <a href="${ruta}/cotizaciones?accion=nueva">Cree la primera</a>.
+                </c:otherwise>
+            </c:choose>
+        </p>
     </c:when>
 
     <c:otherwise>

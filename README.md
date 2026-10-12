@@ -49,15 +49,20 @@ variable `JAVA_INICIO` en las primeras líneas de `compilar.bat`.
 
 > También puede desplegar `showroom.war` copiándolo a `C:\xampp\tomcat\webapps\`.
 
-### Paso 3 — Iniciar los servicios
+### Paso 3 — Iniciar los servicios y abrir el módulo
 
-En el panel de control de XAMPP, **Start** en **MySQL** y en **Tomcat**.
-
-### Paso 4 — Abrir el módulo
-
+```bash
+iniciar-servidor.bat
 ```
-http://localhost:8080/showroom/
-```
+
+Verifica MySQL, arranca Tomcat y abre el navegador en
+`http://localhost:8080/showroom/`. Para apagarlo, `detener-servidor.bat`.
+
+> Este script existe porque el panel de XAMPP necesita que la variable
+> `JAVA_HOME` apunte a un JDK, y en un equipo recién instalado está vacía. El
+> script la define solo para su propia ventana, sin modificar la configuración
+> del sistema. También puede iniciar MySQL y Tomcat a mano desde el panel de
+> XAMPP y abrir `http://localhost:8080/showroom/`.
 
 ### Cuentas de prueba
 
@@ -119,6 +124,8 @@ Navegador (formularios HTML)
 ```
 showroom-servlets-jsp/
 ├── compilar.bat                  Compila y despliega sin Maven
+├── iniciar-servidor.bat          Arranca los servicios y abre el navegador
+├── detener-servidor.bat          Detiene Tomcat
 ├── database/esquema.sql          Base de datos y datos de ejemplo
 ├── docs/                         Informe técnico, pruebas y versionamiento
 ├── showroom.war                  Aplicación empaquetada, lista para desplegar
@@ -213,3 +220,4 @@ Está probado con una carga de inyección en el buscador.
 | [`docs/01-informe-tecnico.md`](docs/01-informe-tecnico.md) | Historias de usuario, casos de uso, diagrama de clases, modelo de datos y plan de trabajo. |
 | [`docs/02-pruebas-realizadas.md`](docs/02-pruebas-realizadas.md) | Las 43 verificaciones ejecutadas, con su resultado, y los 3 defectos que encontraron. |
 | [`docs/03-control-de-versiones.md`](docs/03-control-de-versiones.md) | Flujo de trabajo con Git e historial de commits. |
+| [`docs/04-guion-del-video.md`](docs/04-guion-del-video.md) | Guion de la sustentación en video, con las nueve pruebas en vivo. |
