@@ -1,0 +1,117 @@
+===============================================================================
+ ENLACE DEL REPOSITORIO
+===============================================================================
+
+ Evidencia : GA7-220501096-AA2-EV02 - Modulos de software codificados y probados
+ Actividad : GA7-220501096-AA2 - Aplicar estandares de codificacion, de acuerdo
+             con el diseno
+ Aprendiz  : Jose David Cortes Ortiz
+ Programa  : Analisis y Desarrollo de Software - SENA
+ Proyecto  : Sistema de Showroom y Ventas - Modulo Comercial
+ Tecnologia: Java Servlets y JSP sobre Apache Tomcat y MySQL
+
+-------------------------------------------------------------------------------
+ REPOSITORIO
+-------------------------------------------------------------------------------
+
+   https://github.com/cortizjose/showroom-servlets-jsp
+
+ Visibilidad : Publico (se abre sin iniciar sesion en GitHub)
+ Rama        : main
+ Commits     : 12
+ Usuario     : cortizjose
+
+-------------------------------------------------------------------------------
+ QUE CONTIENE EL REPOSITORIO
+-------------------------------------------------------------------------------
+
+   src/main/java/co/edu/sena/showroom/
+       modelo/      5 clases del dominio
+       dao/         Conexion JDBC y un DAO por entidad (todo el SQL)
+       servlets/    6 servlets con sus metodos doGet y doPost
+       filtros/     Autenticacion y codificacion UTF-8
+       util/        Validador de formularios y cifrado de contrasenas
+
+   src/main/webapp/
+       login.jsp, index.jsp
+       WEB-INF/web.xml          Rutas, filtros, sesion y paginas de error
+       WEB-INF/vistas/          12 vistas JSP
+       WEB-INF/lib/             JSTL 1.2 y driver JDBC de MySQL
+       recursos/estilos.css     Hoja de estilos propia
+
+   database/esquema.sql         Base de datos, seis tablas y datos de ejemplo
+   compilar.bat                 Compila y despliega sin Maven
+
+   docs/01-informe-tecnico.md       Historias de usuario, casos de uso,
+                                    diagrama de clases y modelo de datos
+   docs/02-pruebas-realizadas.md    Las 43 verificaciones ejecutadas
+   docs/03-control-de-versiones.md  Historial y flujo de trabajo con Git
+   README.md                        Guia de instalacion y ejecucion
+
+-------------------------------------------------------------------------------
+ COMO EJECUTARLO (resumen; el detalle esta en README.md)
+-------------------------------------------------------------------------------
+
+ Requisitos: XAMPP (aporta Tomcat 8.5 y MySQL) y un JDK 8 o superior.
+
+   1. Importar database/esquema.sql desde phpMyAdmin.
+         http://localhost/phpmyadmin  ->  pestana Importar
+
+   2. Compilar y desplegar:
+         compilar.bat desplegar
+
+      Si su JDK esta en otra ruta, edite la variable JAVA_INICIO en las
+      primeras lineas de compilar.bat.
+
+      Alternativa: copiar showroom.war a C:\xampp\tomcat\webapps\
+
+   3. Iniciar MySQL y Tomcat en el panel de control de XAMPP.
+
+   4. Abrir:  http://localhost:8080/showroom/
+
+ CUENTAS DE PRUEBA
+
+   Usuario   Contrasena    Rol             Puede
+   -------   -----------   -------------   -----------------------------------
+   admin     Admin2025     administrador   Todo, incluido editar el catalogo
+   asesor    Asesor2025    asesor          Clientes y cotizaciones
+
+-------------------------------------------------------------------------------
+ QUE REVISAR PARA VERIFICAR LO QUE PIDE LA EVIDENCIA
+-------------------------------------------------------------------------------
+
+ FORMULARIOS HTML CON SERVLETS
+   login.jsp                    -> LoginServlet
+   vistas/clientes/formulario   -> ClienteServlet
+   vistas/productos/formulario  -> ProductoServlet
+   vistas/cotizaciones/formulario -> CotizacionServlet
+   El mapeo de cada ruta esta en WEB-INF/web.xml
+
+ METODO GET
+   doGet() en los 6 servlets: listados, formularios y filtros de busqueda.
+   Ejemplo:  /clientes?busqueda=rojas
+
+ METODO POST
+   doPost() en 4 servlets: autenticar, guardar cliente, guardar producto,
+   crear cotizacion y cambiar su estado.
+   Caso mas completo: CotizacionServlet.doPost(), que recibe varias lineas
+   con getParameterValues().
+
+ ELEMENTOS DE JSP
+   Directivas page, taglib e include
+   Lenguaje de expresiones (EL)
+   JSTL: c:forEach, c:if, c:choose, c:out, fmt:formatNumber, fmt:formatDate,
+         fn:length
+   jsp:include para el encabezado y el pie
+   Scriptlets en index.jsp
+   Expresion <%= %> en vistas/plantilla/pie.jsp
+   Objetos implicitos: session, request, application, exception
+   isErrorPage en las paginas 403, 404 y 500
+
+ VERSIONAMIENTO
+   git log --oneline     muestra los 12 commits
+   docs/03-control-de-versiones.md explica la convencion aplicada
+
+===============================================================================
+ Fecha de entrega: 11 de octubre de 2026
+===============================================================================
