@@ -101,60 +101,60 @@ avanza de izquierda a derecha haciendo clic en cada una.
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| Pestaña `Cliente.java`, principio del archivo. | La **línea 15** y las siguientes: `private String documento`, `nombre`, `correo`… | «Esta es una clase modelo: solo atributos privados con sus métodos de acceso. No sabe nada de la base de datos ni del protocolo HTTP, así que puede viajar del DAO al servlet y del servlet a la vista sin arrastrar dependencias.» |
-| El mismo archivo, bajar a la **línea 93**. | El método **`isNuevo()`**. | «Aquí hay una decisión pequeña pero útil: la clase misma responde si el objeto ya se guardó. Así el mismo formulario sirve para crear y para editar, sin dos vistas casi iguales que mantener en paralelo.» |
+| Pestaña `Cliente.java`, principio del archivo. | La **línea 11** y las siguientes: `private String documento`, `nombre`, `correo`… | «Esta es una clase modelo: solo atributos privados con sus métodos de acceso. No sabe nada de la base de datos ni del protocolo HTTP, así que puede viajar del DAO al servlet y del servlet a la vista sin arrastrar dependencias.» |
+| El mismo archivo, bajar a la **línea 89**. | El método **`isNuevo()`**. | «Aquí hay una decisión pequeña pero útil: la clase misma responde si el objeto ya se guardó. Así el mismo formulario sirve para crear y para editar, sin dos vistas casi iguales que mantener en paralelo.» |
 
 ### 3.3. Pestaña 2 — `ClienteDAO.java`, el acceso a datos
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| Pestaña `ClienteDAO.java`, **línea 41** a la vista. | La línea `conexion.prepareStatement(...)` y, debajo, la **línea 45**, `sentencia.setString(1, patron)`. | «Todo el SQL vive en los DAO: ni un servlet ni una vista tienen una consulta. Y todas son consultas preparadas con parámetros. Nunca concateno un valor dentro del SQL.» |
-| El mismo archivo, **líneas 23 a 26**. | El comentario que explica el comodín `%`. | «El comodín va en el **valor** del parámetro, no en la sentencia. Así el texto que escribe el usuario viaja aparte y el motor lo trata siempre como dato, jamás como código. Eso es lo que cierra la puerta a la inyección SQL, y lo voy a demostrar más adelante.» |
-| El mismo archivo, **línea 157**. | El método **`desactivar`** y el comentario de la línea 151. | «Y fíjense que no hay ningún `DELETE`. Borrar un cliente rompería las cotizaciones que lo referencian: se marca inactivo, y el historial queda íntegro.» |
+| Pestaña `ClienteDAO.java`, **línea 31** a la vista. | La línea `conexion.prepareStatement(...)` y, debajo, la **línea 35**, `sentencia.setString(1, patron)`. | «Todo el SQL vive en los DAO: ni un servlet ni una vista tienen una consulta. Y todas son consultas preparadas con parámetros. Nunca concateno un valor dentro del SQL.» |
+| El mismo archivo, **línea 34**. | La línea `String patron = "%" + busqueda.trim() + "%"`. | «Y fíjense dónde va el comodín: en el **valor** del parámetro, no en la sentencia. Así el texto que escribe el usuario viaja aparte y el motor lo trata siempre como dato, jamás como código. Eso es lo que cierra la puerta a la inyección SQL, y lo voy a demostrar más adelante.» |
+| El mismo archivo, **línea 129**. | El método **`desactivar`** y su comentario. | «Y fíjense que no hay ningún `DELETE`. Borrar un cliente rompería las cotizaciones que lo referencian: se marca inactivo, y el historial queda íntegro.» |
 
 ### 3.4. Pestaña 3 — `ConexionBD.java`, la conexión JDBC
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| Pestaña `ConexionBD.java`, **línea 30** a la vista. | El bloque **`static {`** y la **línea 48**, `Class.forName(...)`. | «Esta es la clase de conexión. El driver se registra una sola vez, cuando la clase se carga, y no en cada petición.» |
-| El mismo archivo, arriba. | La constante **`ARCHIVO = "configuracion.properties"`**. | «Y las credenciales no están escritas en el código: se leen de un archivo de configuración. Para pasar a otro servidor se cambia un archivo de texto, no se recompila.» |
+| Pestaña `ConexionBD.java`, **línea 19** a la vista. | El bloque **`static {`** y la **línea 35**, `Class.forName(...)`. | «Esta es la clase de conexión. El driver se registra una sola vez, cuando la clase se carga, y no en cada petición.» |
+| El mismo archivo, **línea 13**. | La constante **`ARCHIVO = "configuracion.properties"`**. | «Y las credenciales no están escritas en el código: se leen de un archivo de configuración. Para pasar a otro servidor se cambia un archivo de texto, no se recompila.» |
 
 ### 3.5. Pestaña 4 — `LoginServlet.java`, **GET frente a POST**
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| Pestaña `LoginServlet.java`, **línea 49**. | La firma de **`doGet`**. | «Aquí se ve la diferencia entre los dos métodos HTTP que pide la evidencia. `doGet` **muestra** el formulario: es una consulta, no cambia nada y se puede repetir sin consecuencias.» |
-| Bajar a la **línea 64**. | La firma de **`doPost`**. | «Y `doPost` lo **procesa**: valida las credenciales y crea la sesión. El login tiene que ser POST. Con GET, la contraseña quedaría escrita en la barra de direcciones, en el historial del navegador y en los registros del servidor.» |
-| **Línea 79**. | El comentario del mensaje único. | «Cuando las credenciales fallan devuelvo el mismo mensaje para "no existe" y para "clave incorrecta". Si fueran distintos, cualquiera podría averiguar qué usuarios hay probando nombres.» |
-| **Línea 86**. | El comentario de la sesión nueva. | «Y después de autenticar creo una sesión nueva, lo que evita la fijación de sesión.» |
-| **Líneas 99 a 102**. | El comentario y el **`sendRedirect`**. | «Por último respondo con una redirección y no con un `forward`. Es el patrón POST-Redirect-GET: si respondiera directo al POST, al pulsar F5 el navegador reenviaría el formulario con la contraseña.» |
+| Pestaña `LoginServlet.java`, **línea 30**. | La firma de **`doGet`**. | «Aquí se ve la diferencia entre los dos métodos HTTP que pide la evidencia. `doGet` **muestra** el formulario: es una consulta, no cambia nada y se puede repetir sin consecuencias.» |
+| Bajar a la **línea 45**. | La firma de **`doPost`**. | «Y `doPost` lo **procesa**: valida las credenciales y crea la sesión. El login tiene que ser POST. Con GET, la contraseña quedaría escrita en la barra de direcciones, en el historial del navegador y en los registros del servidor.» |
+| **Línea 60**. | El comentario del mensaje único. | «Cuando las credenciales fallan devuelvo el mismo mensaje para "no existe" y para "clave incorrecta". Si fueran distintos, cualquiera podría averiguar qué usuarios hay probando nombres.» |
+| **Línea 66**. | El comentario de la sesión nueva. | «Y después de autenticar creo una sesión nueva, lo que evita la fijación de sesión.» |
+| **Líneas 77 y 78**. | El comentario y el **`sendRedirect`**. | «Por último respondo con una redirección y no con un `forward`. Es el patrón POST-Redirect-GET: si respondiera directo al POST, al pulsar F5 el navegador reenviaría el formulario con la contraseña.» |
 
 ### 3.6. Pestaña 5 — `CotizacionServlet.java`, **la regla central**
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| Pestaña `CotizacionServlet.java`, **líneas 165 y 166**. | Las dos líneas `getParameterValues("productoId")` y `getParameterValues("cantidad")`. | «Este es el formulario más interesante del módulo, porque envía varias líneas a la vez. Cuando un formulario tiene varios campos con el mismo nombre, el servlet los recibe como arreglos, y la posición de uno corresponde a la del otro.» |
-| Bajar a la **línea 199**. | La cabecera del método **`armarLineas`**. | «Aquí recorro esas líneas. De cada una valido que el producto exista, que esté activo y que la cantidad no supere las existencias.» |
-| **Líneas 230 a 232**. | El comentario «El precio sale del objeto Producto» y la línea `new DetalleCotizacion(producto, cantidad)`. | «Y esta es la regla más importante de todo el módulo. Del formulario tomo **qué** producto y **cuántas** unidades. El **precio** lo busco yo en el catálogo. Si aceptara el precio que manda el navegador, cualquiera cotizaría un sofá en mil pesos editando el HTML antes de enviarlo. Esto lo voy a probar en vivo.» |
-| Bajar a la **línea 279**. | El método **`esTransicionValida`**. | «Y aquí están declaradas las transiciones válidas del documento. Sin esto, una petición cualquiera podría devolver a borrador una cotización ya aprobada.» |
+| Pestaña `CotizacionServlet.java`, **líneas 140 y 141**. | Las dos líneas `getParameterValues("productoId")` y `getParameterValues("cantidad")`. | «Este es el formulario más interesante del módulo, porque envía varias líneas a la vez. Cuando un formulario tiene varios campos con el mismo nombre, el servlet los recibe como arreglos, y la posición de uno corresponde a la del otro.» |
+| Bajar a la **línea 167**. | La cabecera del método **`armarLineas`**. | «Aquí recorro esas líneas. De cada una valido que el producto exista, que esté activo y que la cantidad no supere las existencias.» |
+| **Líneas 198 y 199**. | El comentario «El precio sale del objeto Producto» y la línea `new DetalleCotizacion(producto, cantidad)`. | «Y esta es la regla más importante de todo el módulo. Del formulario tomo **qué** producto y **cuántas** unidades. El **precio** lo busco yo en el catálogo. Si aceptara el precio que manda el navegador, cualquiera cotizaría un sofá en mil pesos editando el HTML antes de enviarlo. Esto lo voy a probar en vivo.» |
+| Bajar a la **línea 235**. | El método **`esTransicionValida`**. | «Y aquí están declaradas las transiciones válidas del documento. Sin esto, una petición cualquiera podría devolver a borrador una cotización ya aprobada.» |
 
 ### 3.7. Pestaña 6 — `detalle.jsp`, **los elementos de JSP**
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| Pestaña `detalle.jsp`, **líneas 16 y 17**. | Las dos directivas **`<%@ taglib %>`**. | «Las vistas están en JSP. Arriba se declaran las librerías de etiquetas: `c` para la lógica de presentación y `fmt` para los formatos.» |
-| **Línea 68**. | La etiqueta **`<c:forEach var="detalle">`**. | «`c:forEach` recorre la lista que dejó el servlet. La vista no consulta la base de datos: solo muestra lo que ya viene calculado.» |
-| **Línea 104**. | La etiqueta **`<fmt:formatNumber type="currency">`**. | «`fmt:formatNumber` da formato de moneda en el servidor, sin construir la cadena a mano.» |
-| **Línea 40**. | La etiqueta **`<c:out value="${cotizacion.clienteNombre}">`**. | «Y los datos que escribió el usuario los imprimo con `c:out`, que escapa los caracteres de HTML. Una expresión suelta como `${...}` no escapa nada: un nombre con una comilla doble se saldría del atributo de un formulario.» |
+| Pestaña `detalle.jsp`, **líneas 3 y 4**. | Las dos directivas **`<%@ taglib %>`**. | «Las vistas están en JSP. Arriba se declaran las librerías de etiquetas: `c` para la lógica de presentación y `fmt` para los formatos.» |
+| **Línea 55**. | La etiqueta **`<c:forEach var="detalle">`**. | «`c:forEach` recorre la lista que dejó el servlet. La vista no consulta la base de datos: solo muestra lo que ya viene calculado.» |
+| **Línea 91**. | La etiqueta **`<fmt:formatNumber type="currency">`**. | «`fmt:formatNumber` da formato de moneda en el servidor, sin construir la cadena a mano.» |
+| **Línea 27**. | La etiqueta **`<c:out value="${cotizacion.clienteNombre}">`**. | «Y los datos que escribió el usuario los imprimo con `c:out`, que escapa los caracteres de HTML. Una expresión suelta como `${...}` no escapa nada: un nombre con una comilla doble se saldría del atributo de un formulario.» |
 
 ### 3.8. Pestaña 7 — `web.xml`, **el mapa del módulo**
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| Pestaña `web.xml`, **línea 84**. | Un bloque **`<servlet-mapping>`** completo y, en la **línea 117**, `<url-pattern>/clientes</url-pattern>`. | «Este es el descriptor de despliegue: aquí se declara qué clase atiende qué dirección. Uso `web.xml` en vez de anotaciones para que todo el mapa del módulo se lea en un solo archivo.» |
-| **Líneas 62 y 71**. | Los dos bloques **`<filter-mapping>`**. | «Dos filtros, y el orden importa: primero se fija la codificación UTF-8, antes de que cualquier servlet lea un parámetro; después se verifica la sesión.» |
-| **Línea 44**. | El `<param-name>` de la **locale de JSTL**. | «Esta línea vale la pena: declara la configuración regional de los formatos. Sin ella JSTL no lanza error, simplemente devuelve el número crudo y los montos aparecen sin formato de moneda. Fue uno de los defectos que encontraron las pruebas.» |
-| Bajar al final del archivo. | Los bloques **`<error-page>`**. | «Y las páginas de error son propias, para que el usuario no vea nunca la traza de una excepción, que revelaría rutas de archivos y nombres de tablas.» |
+| Pestaña `web.xml`, **línea 53**. | Un bloque **`<servlet-mapping>`** completo y, en la **línea 84**, `<url-pattern>/clientes</url-pattern>`. | «Este es el descriptor de despliegue: aquí se declara qué clase atiende qué dirección. Uso `web.xml` en vez de anotaciones para que todo el mapa del módulo se lea en un solo archivo.» |
+| **Líneas 35 y 44**. | Los dos bloques **`<filter-mapping>`**. | «Dos filtros, y el orden importa: primero se fija la codificación UTF-8, antes de que cualquier servlet lea un parámetro; después se verifica la sesión.» |
+| **Línea 21**. | El `<param-name>` de la **locale de JSTL**. | «Esta línea vale la pena: declara la configuración regional de los formatos. Sin ella JSTL no lanza error, simplemente devuelve el número crudo y los montos aparecen sin formato de moneda. Fue uno de los defectos que encontraron las pruebas.» |
+| Bajar a la **línea 121**. | Los bloques **`<error-page>`**. | «Y las páginas de error son propias, para que el usuario no vea nunca la traza de una excepción, que revelaría rutas de archivos y nombres de tablas.» |
 | Volver al navegador. | La barra de direcciones, en una URL como `/clientes?accion=editar&id=1`. | «Fíjense en la forma de las direcciones: un servlet y un parámetro `accion`. Es el patrón que vimos en la formación, solo que aquí cada operación además verifica la sesión y el rol antes de ejecutarse.» |
 
 ---
@@ -313,13 +313,13 @@ avanza de izquierda a derecha haciendo clic en cada una.
 
 | # | Pestaña | Líneas que se señalan |
 |---|---|---|
-| 1 | `Cliente.java` | 15 y siguientes · 93 |
-| 2 | `ClienteDAO.java` | 41 · 45 · 23-26 · 151 · 157 |
-| 3 | `ConexionBD.java` | 30 · 48 |
-| 4 | `LoginServlet.java` | 49 · 64 · 79 · 86 · 99-102 |
-| 5 | `CotizacionServlet.java` | 165-166 · 199 · 230-232 · 279 |
-| 6 | `detalle.jsp` | 16-17 · 68 · 104 · 40 |
-| 7 | `web.xml` | 84 · 117 · 62 · 71 · 44 |
+| 1 | `Cliente.java` | 11 y siguientes · 89 |
+| 2 | `ClienteDAO.java` | 31 · 35 · 34 · 129 |
+| 3 | `ConexionBD.java` | 19 · 35 · 13 |
+| 4 | `LoginServlet.java` | 30 · 45 · 60 · 66 · 77-78 |
+| 5 | `CotizacionServlet.java` | 140-141 · 167 · 198-199 · 235 |
+| 6 | `detalle.jsp` | 3-4 · 55 · 91 · 27 |
+| 7 | `web.xml` | 53 · 84 · 35 · 44 · 21 · 121 |
 
 > Si al abrir el archivo la línea no coincide exactamente, está a pocas líneas:
 > use `Ctrl+G` y escriba el número, o `Ctrl+F` y busque el texto que aparece en

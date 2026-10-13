@@ -1,10 +1,4 @@
-/* =============================================================================
-   Modulo Comercial del Showroom - hoja de estilos
-   Evidencia GA7-220501096-AA2-EV02 | Jose Cortes
-
-   Se escribe CSS propio y no un framework externo para que el proyecto no
-   dependa de archivos descargados de internet: funciona sin conexion.
-   ============================================================================= */
+/* Modulo Comercial del Showroom - hoja de estilos Evidencia GA7-220501096-AA2-EV02 | Jose Cortes Se escribe CSS propio y. */
 
 :root {
     --azul: #1f5fd6;
@@ -40,7 +34,7 @@ code {
     color: var(--rojo);
 }
 
-/* ---------- Barra superior ---------- */
+/* -------- Barra superior ----------. */
 .barra {
     background: var(--azul-oscuro);
     color: #fff;
@@ -100,7 +94,7 @@ code {
 }
 .boton-salir:hover { background: rgba(255, 255, 255, .12); color: #fff; text-decoration: none; }
 
-/* ---------- Contenido ---------- */
+/* -------- Contenido ----------. */
 .contenido { max-width: 1200px; margin: 0 auto; padding: 26px 20px 50px; }
 
 .cabecera-seccion {
@@ -116,7 +110,7 @@ h2 { font-size: 16px; margin: 0 0 6px; color: var(--azul-oscuro); }
 .titulo-bloque { margin-top: 26px; font-size: 18px; }
 .subtitulo { margin: 4px 0 0; color: var(--gris-texto); font-size: 14px; }
 
-/* ---------- Avisos ---------- */
+/* -------- Avisos ----------. */
 .aviso {
     padding: 11px 15px;
     border-radius: 7px;
@@ -129,7 +123,7 @@ h2 { font-size: 16px; margin: 0 0 6px; color: var(--azul-oscuro); }
 .aviso ul { margin: 7px 0 0; padding-left: 20px; }
 .aviso li { margin-bottom: 3px; }
 
-/* ---------- Indicadores ---------- */
+/* -------- Indicadores ----------. */
 .indicadores {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -158,7 +152,7 @@ h2 { font-size: 16px; margin: 0 0 6px; color: var(--azul-oscuro); }
 .indicador a { font-size: 13px; margin-top: 4px; }
 .indicador .nota { font-size: 12.5px; color: #6a7686; }
 
-/* ---------- Paneles ---------- */
+/* -------- Paneles ----------. */
 .panel {
     background: #fff;
     border: 1px solid var(--gris-borde);
@@ -171,7 +165,7 @@ h2 { font-size: 16px; margin: 0 0 6px; color: var(--azul-oscuro); }
 .acciones-estado { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .acciones-estado h2 { width: 100%; }
 
-/* ---------- Tablas ---------- */
+/* -------- Tablas ----------. */
 .tabla {
     width: 100%;
     border-collapse: collapse;
@@ -203,7 +197,7 @@ h2 { font-size: 16px; margin: 0 0 6px; color: var(--azul-oscuro); }
 .acciones { white-space: nowrap; }
 .en-linea { display: inline; }
 
-/* ---------- Etiquetas de estado ---------- */
+/* -------- Etiquetas de estado ----------. */
 .estado {
     display: inline-block;
     padding: 3px 10px;
@@ -230,7 +224,7 @@ h2 { font-size: 16px; margin: 0 0 6px; color: var(--azul-oscuro); }
 .verbo.get { background: #e8f6ee; color: var(--verde); }
 .verbo.post { background: var(--azul-claro); color: var(--azul); }
 
-/* ---------- Botones ---------- */
+/* -------- Botones ----------. */
 .boton {
     display: inline-block;
     padding: 8px 16px;
@@ -252,7 +246,7 @@ h2 { font-size: 16px; margin: 0 0 6px; color: var(--azul-oscuro); }
 .boton.pequeno { padding: 5px 11px; font-size: 13px; }
 .boton.ancho { width: 100%; text-align: center; }
 
-/* ---------- Formularios ---------- */
+/* -------- Formularios ----------. */
 .barra-filtros {
     display: flex;
     gap: 9px;
@@ -319,7 +313,7 @@ textarea { resize: vertical; }
     color: #6a7686;
 }
 
-/* ---------- Pantalla de ingreso y de error ---------- */
+/* -------- Pantalla de ingreso y de error ----------. */
 .pantalla-login {
     display: flex;
     align-items: center;
@@ -367,7 +361,7 @@ textarea { resize: vertical; }
 }
 .detalle-error p { margin: 0 0 5px; word-break: break-word; }
 
-/* ---------- Pie ---------- */
+/* -------- Pie ----------. */
 .pie { border-top: 1px solid var(--gris-borde); background: #fff; padding: 18px 0; }
 .pie-interior {
     max-width: 1200px;
@@ -381,7 +375,7 @@ textarea { resize: vertical; }
     flex-wrap: wrap;
 }
 
-/* ---------- Pantallas pequenas ---------- */
+/* -------- Pantallas pequenas ----------. */
 @media (max-width: 760px) {
     .barra-interior { min-height: auto; padding: 12px 16px; }
     .menu { margin-left: 0; width: 100%; overflow-x: auto; }

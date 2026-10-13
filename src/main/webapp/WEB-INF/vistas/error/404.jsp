@@ -1,7 +1,4 @@
-<%--
-  Pagina de error 404. Se declara en web.xml con <error-page>, de modo que
-  Tomcat la muestra en lugar de su pagina generica.
---%>
+<%-- Pagina de error 404. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" isErrorPage="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ruta" value="${pageContext.request.contextPath}" />

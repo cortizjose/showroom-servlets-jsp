@@ -12,16 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Tablero de inicio: muestra los indicadores del modulo.
- *
- * Solo responde a GET, porque unicamente consulta. Un servlet que no modifica
- * nada no tiene por que aceptar POST: si no se implementa doPost, HttpServlet
- * responde 405 Method Not Allowed por su cuenta, y esa es la respuesta
- * correcta.
- *
- * @author Jose Cortes
- */
+/** Tablero de inicio: muestra los indicadores del modulo. */
 public class TableroServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

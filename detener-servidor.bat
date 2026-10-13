@@ -1,7 +1,6 @@
 @echo off
 REM ============================================================================
-REM  Detiene Tomcat.  Evidencia GA7-220501096-AA2-EV02  |  Jose Cortes
-REM  MySQL se deja encendido: lo usan otros proyectos de XAMPP.
+REM Detiene Tomcat.
 REM ============================================================================
 
 title Detener el servidor del modulo

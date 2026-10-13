@@ -17,30 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Servlet de cotizaciones: el nucleo del modulo.
- *
- * Es el caso mas interesante del proyecto porque el formulario envia varias
- * lineas a la vez. Cuando un formulario HTML tiene varios campos con el MISMO
- * nombre, el servlet los recupera con getParameterValues(), que devuelve un
- * arreglo:
- *
- *   <input name="productoId" value="3">  <input name="cantidad" value="2">
- *   <input name="productoId" value="7">  <input name="cantidad" value="1">
- *
- *   String[] productos  = peticion.getParameterValues("productoId");
- *   String[] cantidades = peticion.getParameterValues("cantidad");
- *
- * Los dos arreglos vienen en el mismo orden, de modo que la posicion i de uno
- * corresponde a la posicion i del otro.
- *
- * Regla de seguridad central: del formulario se toma QUE producto y CUANTAS
- * unidades. El PRECIO lo busca el servidor en el catalogo. Si se aceptara el
- * precio del formulario, cualquiera podria cotizar un sofa en mil pesos
- * editando el HTML antes de enviarlo.
- *
- * @author Jose Cortes
- */
+/** Servlet de cotizaciones: el nucleo del modulo. */
 public class CotizacionServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -142,9 +119,7 @@ public class CotizacionServlet extends HttpServlet {
                 .forward(peticion, respuesta);
     }
 
-    /**
-     * Construye la cotizacion a partir del formulario y la guarda.
-     */
+    /** Construye la cotizacion a partir del formulario y la guarda. */
     private void guardar(HttpServletRequest peticion, HttpServletResponse respuesta)
             throws SQLException, ServletException, IOException {
 
@@ -188,14 +163,7 @@ public class CotizacionServlet extends HttpServlet {
                 + "/cotizaciones?accion=detalle&id=" + id + "&mensaje=creada");
     }
 
-    /**
-     * Recorre las lineas del formulario y las agrega a la cotizacion.
-     *
-     * De cada linea se valida que el producto exista, que este activo y que la
-     * cantidad no supere el stock disponible. Las lineas con cantidad cero se
-     * ignoran en silencio: el formulario muestra todo el catalogo y es normal
-     * que la mayoria de las filas vayan vacias.
-     */
+    /** Recorre las lineas del formulario y las agrega a la cotizacion. */
     private void armarLineas(Cotizacion cotizacion, String[] productoIds, String[] cantidades,
                              Validador validador) throws SQLException {
 
@@ -227,8 +195,7 @@ public class CotizacionServlet extends HttpServlet {
                 continue;
             }
 
-            // El precio sale del objeto Producto recien leido de la base,
-            // nunca del formulario.
+            // El precio sale del objeto Producto recien leido de la base, nunca del formulario.
             cotizacion.agregarDetalle(new DetalleCotizacion(producto, cantidad));
             lineasValidas++;
         }
@@ -239,9 +206,7 @@ public class CotizacionServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Cambia el estado de la cotizacion respetando las transiciones validas.
-     */
+    /** Cambia el estado de la cotizacion respetando las transiciones validas. */
     private void cambiarEstado(HttpServletRequest peticion, HttpServletResponse respuesta)
             throws SQLException, IOException {
 
@@ -266,16 +231,7 @@ public class CotizacionServlet extends HttpServlet {
                 + "/cotizaciones?accion=detalle&id=" + id + "&mensaje=estado-actualizado");
     }
 
-    /**
-     * Maquina de estados del documento.
-     *
-     *   borrador -> enviada
-     *   enviada  -> aprobada | rechazada
-     *
-     * Sin esta comprobacion, un PATCH cualquiera podria devolver una
-     * cotizacion aprobada a borrador, y el historial comercial dejaria de
-     * tener sentido.
-     */
+    /** Maquina de estados del documento. */
     private boolean esTransicionValida(String actual, String siguiente) {
         if (Cotizacion.ESTADO_BORRADOR.equals(actual)) {
             return Cotizacion.ESTADO_ENVIADA.equals(siguiente);

@@ -1,17 +1,4 @@
-<%--
-  Detalle de una cotizacion, con sus lineas y sus totales.
-
-  Incluye los formularios POST que cambian el estado del documento. Que botones
-  se muestran depende del estado actual, segun la maquina de estados:
-
-      borrador -> enviada
-      enviada  -> aprobada o rechazada
-      aprobada y rechazada son finales
-
-  La vista oculta los botones que no corresponden, y el servlet vuelve a
-  validar la transicion. Las dos cosas: la vista por claridad, el servlet por
-  seguridad.
---%>
+<%-- Detalle de una cotizacion, con sus lineas y sus totales. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -109,7 +96,7 @@
     </tfoot>
 </table>
 
-<%-- Cambios de estado: cada boton es un formulario POST independiente --%>
+<%-- Cambios de estado: cada boton es un formulario POST independiente. --%>
 <c:if test="${cotizacion.estado eq 'borrador' or cotizacion.estado eq 'enviada'}">
     <div class="panel acciones-estado">
         <h2>Cambiar estado</h2>

@@ -1,18 +1,11 @@
 @echo off
 REM ============================================================================
-REM  Compila y empaqueta el Modulo Comercial del Showroom
-REM  Evidencia GA7-220501096-AA2-EV02  |  Jose Cortes
-REM
-REM  Uso:   compilar.bat           compila y arma la carpeta build
-REM         compilar.bat desplegar compila y copia a Tomcat de XAMPP
-REM
-REM  No se necesita Maven ni Gradle: el proyecto no tiene mas dependencias que
-REM  el driver de MySQL y JSTL, que ya viajan en WEB-INF\lib.
+REM Compila y empaqueta el Modulo Comercial del Showroom Evidencia GA7-220501096-AA2-EV02 | Jose Cortes Uso: compilar.bat.
 REM ============================================================================
 
 setlocal enabledelayedexpansion
 
-REM --- Ajuste estas dos rutas si su instalacion es distinta -------------------
+REM --- Ajuste estas dos rutas si su instalacion es distinta ----------------------
 set "JAVA_INICIO=C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot"
 set "TOMCAT=C:\xampp\tomcat"
 REM ---------------------------------------------------------------------------
@@ -42,19 +35,13 @@ if exist "%SALIDA%" rmdir /s /q "%SALIDA%"
 mkdir "%SALIDA%\WEB-INF\classes"
 
 echo  [2/5] Listando los archivos fuente
-REM  Cada ruta se escribe entre comillas y con barras normales. Dos motivos:
-REM   - la ruta del proyecto puede contener espacios, y sin comillas javac
-REM     interpretaria cada palabra como un archivo distinto;
-REM   - dentro de un archivo de argumentos javac trata la barra invertida como
-REM     caracter de escape, de modo que C:\Users se leeria como C:Users.
 (for /f "delims=" %%f in ('dir /s /b "%PROYECTO%src\main\java\*.java"') do @(
     set "ARCHIVO=%%f"
     echo "!ARCHIVO:\=/!"
 )) > "%TEMP%\fuentes_showroom.txt"
 
 echo  [3/5] Compilando
-REM  --release 8 produce bytecode compatible con Java 8 en adelante, de modo
-REM  que la aplicacion corre en cualquier Tomcat moderno.
+REM release 8 produce bytecode compatible con Java 8 en adelante, de modo que la aplicacion corre en cualquier Tomcat.
 "%JAVA_INICIO%\bin\javac.exe" -encoding UTF-8 --release 8 -nowarn ^
     -d "%SALIDA%\WEB-INF\classes" ^
     -cp "%TOMCAT%\lib\servlet-api.jar;%TOMCAT%\lib\jsp-api.jar;%PROYECTO%src\main\webapp\WEB-INF\lib\jstl-1.2.jar;%PROYECTO%src\main\webapp\WEB-INF\lib\mysql-connector-j-8.4.0.jar" ^

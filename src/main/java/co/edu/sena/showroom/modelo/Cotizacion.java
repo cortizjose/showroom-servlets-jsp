@@ -7,21 +7,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Cotizacion entregada a un cliente del showroom.
- *
- * Los totales NO se reciben del formulario: los calcula esta clase a partir de
- * las lineas de detalle, y cada linea toma el precio del catalogo. Si el total
- * viniera del cliente, cualquiera podria enviar una cotizacion de un peso
- * modificando el HTML antes de enviarlo.
- *
- * @author Jose Cortes
- */
+/** Cotizacion entregada a un cliente del showroom. */
 public class Cotizacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /** IVA vigente en Colombia. Se declara una sola vez para no repetir el 0.19 en el codigo. */
+    /** IVA vigente en Colombia. */
     public static final BigDecimal IVA = new BigDecimal("0.19");
 
     /** Dias de vigencia de una cotizacion desde su creacion. */
@@ -54,21 +45,13 @@ public class Cotizacion implements Serializable {
         this.total = BigDecimal.ZERO;
     }
 
-    /**
-     * Agrega una linea y recalcula los totales del documento.
-     */
+    /** Agrega una linea y recalcula los totales del documento. */
     public void agregarDetalle(DetalleCotizacion detalle) {
         this.detalles.add(detalle);
         calcularTotales();
     }
 
-    /**
-     * Recalcula subtotal, IVA y total a partir de las lineas.
-     *
-     * Se redondea a dos decimales con HALF_UP, el modo que usa la contabilidad:
-     * medio centavo sube. Sin redondeo explicito, la suma de las lineas y el
-     * total podrian diferir en centavos y el documento no cuadraria.
-     */
+    /** Recalcula subtotal, IVA y total a partir de las lineas. */
     public void calcularTotales() {
         BigDecimal acumulado = BigDecimal.ZERO;
         for (DetalleCotizacion detalle : this.detalles) {

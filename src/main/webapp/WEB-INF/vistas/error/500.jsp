@@ -1,11 +1,4 @@
-<%--
-  Pagina para errores no previstos.
-
-  isErrorPage="true" habilita el objeto implicito "exception". Se muestra
-  unicamente el tipo y el mensaje: la traza completa iria a los registros del
-  servidor, no a la pantalla del usuario, porque revela rutas de archivos,
-  nombres de tablas y version del software.
---%>
+<%-- Pagina para errores no previstos. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" isErrorPage="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 

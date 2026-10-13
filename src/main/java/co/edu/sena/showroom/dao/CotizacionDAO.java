@@ -12,26 +12,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Acceso a datos de cotizaciones y de sus lineas de detalle.
- *
- * Es el DAO mas delicado del modulo, porque guardar una cotizacion implica
- * escribir en dos tablas. Si la cabecera se guardara y el detalle fallara,
- * quedaria una cotizacion sin productos y con totales que no corresponden a
- * nada. Por eso la insercion va dentro de una TRANSACCION: o se guarda todo,
- * o no se guarda nada.
- *
- * @author Jose Cortes
- */
+/** Acceso a datos de cotizaciones y de sus lineas de detalle. */
 public class CotizacionDAO {
 
-    /**
-     * Guarda la cabecera y todas sus lineas en una sola transaccion.
-     *
-     * Pasos: se desactiva el commit automatico, se inserta la cabecera, se
-     * insertan las lineas en lote y se confirma. Si algo falla, rollback deja
-     * la base como estaba.
-     */
+    /** Guarda la cabecera y todas sus lineas en una sola transaccion. */
     public int insertar(Cotizacion cotizacion) throws SQLException {
         String sqlCabecera = "INSERT INTO cotizaciones "
                 + "(numero, cliente_id, usuario_id, estado, observaciones, subtotal, iva, total, fecha_creacion) "
@@ -48,7 +32,6 @@ public class CotizacionDAO {
 
             int idGenerado;
 
-            // 1. Cabecera
             try (PreparedStatement sentencia =
                          conexion.prepareStatement(sqlCabecera, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -70,7 +53,6 @@ public class CotizacionDAO {
                 }
             }
 
-            // 2. Lineas de detalle, en lote
             try (PreparedStatement sentencia = conexion.prepareStatement(sqlDetalle)) {
                 for (DetalleCotizacion detalle : cotizacion.getDetalles()) {
                     sentencia.setInt(1, idGenerado);
@@ -100,13 +82,7 @@ public class CotizacionDAO {
         }
     }
 
-    /**
-     * Calcula el numero consecutivo del documento: COT-000001, COT-000002...
-     *
-     * Recibe la conexion por parametro para ejecutarse DENTRO de la misma
-     * transaccion que la insercion. Si abriera su propia conexion, dos
-     * usuarios cotizando al mismo tiempo podrian obtener el mismo numero.
-     */
+    /** Calcula el numero consecutivo del documento: COT-000001, COT-000002... */
     private String siguienteNumero(Connection conexion) throws SQLException {
         String sql = "SELECT COALESCE(MAX(CAST(SUBSTRING(numero, 5) AS UNSIGNED)), 0) + 1 FROM cotizaciones";
 

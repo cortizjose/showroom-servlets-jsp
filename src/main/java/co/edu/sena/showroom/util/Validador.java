@@ -5,22 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * Valida los datos que llegan de un formulario HTML y acumula los errores.
- *
- * Por que acumular y no fallar en el primer error: si el formulario tiene tres
- * campos mal, el usuario debe verlos los tres de una vez. Devolver solo el
- * primero obliga a enviar el formulario cuatro veces.
- *
- * Se usa LinkedHashMap para que los errores se muestren en el mismo orden en
- * que estan los campos en el formulario.
- *
- * Importante: esta validacion ocurre en el SERVIDOR. Los atributos required y
- * type del HTML ayudan al usuario, pero se pueden desactivar desde el
- * navegador, asi que nunca son la ultima defensa.
- *
- * @author Jose Cortes
- */
+/** Valida los datos que llegan de un formulario HTML y acumula los errores. */
 public class Validador {
 
     private static final Pattern PATRON_CORREO =
@@ -103,20 +88,7 @@ public class Validador {
         }
     }
 
-    /**
-     * Normaliza un valor recibido del formulario: quita espacios sobrantes y
-     * elimina las etiquetas HTML.
-     *
-     * Quitar las etiquetas evita que un texto como <script>...</script> quede
-     * guardado y se ejecute al mostrarlo (XSS almacenado).
-     *
-     * Esta es solo la primera barrera. La segunda esta en las vistas, que
-     * imprimen los datos del usuario con <c:out>, el cual escapa los
-     * caracteres menor que, mayor que, ampersand y las comillas. Hace falta,
-     * porque una expresion EL suelta como ${cliente.nombre} NO escapa nada: un
-     * nombre con una comilla doble se saldria del atributo value de un
-     * formulario.
-     */
+    /** Normaliza un valor recibido del formulario: quita espacios sobrantes y elimina las etiquetas HTML. */
     public static String limpiar(String valor) {
         if (valor == null) {
             return "";

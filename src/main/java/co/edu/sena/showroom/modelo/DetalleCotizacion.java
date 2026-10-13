@@ -4,15 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/**
- * Linea de detalle de una cotizacion: un producto, una cantidad y su precio.
- *
- * El precio unitario se copia del catalogo en el momento de cotizar y queda
- * guardado en la linea. Asi, si manana el producto cambia de precio, la
- * cotizacion historica sigue mostrando el valor que se le ofrecio al cliente.
- *
- * @author Jose Cortes
- */
+/** Linea de detalle de una cotizacion: un producto, una cantidad y su precio. */
 public class DetalleCotizacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,11 +23,7 @@ public class DetalleCotizacion implements Serializable {
         this.subtotal = BigDecimal.ZERO;
     }
 
-    /**
-     * Construye la linea a partir del producto del catalogo y la cantidad
-     * solicitada. Este es el unico camino por el que deberia crearse una linea
-     * nueva, porque garantiza que el precio salga del catalogo.
-     */
+    /** Construye la linea a partir del producto del catalogo y la cantidad solicitada. */
     public DetalleCotizacion(Producto producto, int cantidad) {
         this.productoId = producto.getId();
         this.productoCodigo = producto.getCodigo();

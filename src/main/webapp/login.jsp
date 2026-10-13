@@ -1,16 +1,4 @@
-<%--
-  Formulario de inicio de sesion.
-
-  Es el formulario HTML mas importante del modulo y el que mejor muestra la
-  diferencia entre GET y POST:
-
-    method="post"  -> las credenciales viajan en el CUERPO de la peticion.
-                      Con GET quedarian escritas en la barra de direcciones,
-                      en el historial del navegador y en los registros del
-                      servidor.
-
-    action="login" -> la atiende LoginServlet, declarado en web.xml.
---%>
+<%-- Formulario de inicio de sesion. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -34,8 +22,7 @@
         <p>Showroom de muebles &middot; Gesti&oacute;n de clientes, cat&aacute;logo y cotizaciones</p>
     </div>
 
-    <%-- Mensajes de error. El servlet los deja como atributo de la peticion
-         antes de hacer forward a esta pagina. --%>
+    <%-- Mensajes de error. --%>
     <c:if test="${not empty error}">
         <p class="aviso error"><c:out value="${error}" /></p>
     </c:if>
@@ -50,9 +37,7 @@
 
         <div class="campo">
             <label for="usuario">Usuario</label>
-            <%-- El valor se devuelve al usuario si hubo error, para que no
-                 tenga que escribirlo otra vez. La contrasena nunca se
-                 devuelve. --%>
+            <%-- El valor se devuelve al usuario si hubo error, para que no tenga que escribirlo otra vez. --%>
             <input type="text" id="usuario" name="usuario"
                    value="<c:out value='${usuarioIngresado}' />" required maxlength="40" autofocus>
         </div>

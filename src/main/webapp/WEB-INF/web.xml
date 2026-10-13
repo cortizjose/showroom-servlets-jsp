@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  Descriptor de despliegue del modulo.
-
-  Aqui se declara QUE clase atiende QUE direccion. Se usa web.xml en lugar de
-  anotaciones @WebServlet porque deja toda la configuracion del modulo en un
-  solo archivo: de un vistazo se ve el mapa completo de rutas, filtros y
-  paginas de error, sin abrir una por una las clases Java.
-
-  Autor: Jose Cortes
-  Evidencia GA7-220501096-AA2-EV02
--->
+<!-- Descriptor de despliegue del modulo. -->
 
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -24,32 +14,15 @@
         Desarrollado con Java Servlets y JSP sobre Apache Tomcat.
     </description>
 
-    <!-- =====================================================================
-         CONFIGURACION DE FORMATO
-         ===================================================================== -->
+    <!-- CONFIGURACION DE FORMATO. -->
 
-    <!--
-      Locale de formato para las etiquetas <fmt:...> de JSTL.
-
-      Hace falta declararla. Cuando JSTL no logra resolver una locale de
-      formato, no lanza error: devuelve el valor con toString(), y los montos
-      aparecen como 6520000.00 en lugar de $ 6.520.000. Eso ocurre, por
-      ejemplo, cuando la peticion llega sin encabezado Accept-Language.
-
-      Fijandola aqui, el modulo muestra siempre pesos colombianos con punto de
-      miles, sin depender de la configuracion del navegador ni del sistema
-      operativo donde se despliegue.
-    -->
+    <!-- Locale de formato para las etiquetas <fmt:...> de JSTL. -->
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.locale</param-name>
         <param-value>es_CO</param-value>
     </context-param>
 
-    <!-- =====================================================================
-         FILTROS
-         Se ejecutan antes de los servlets. El orden de los mapeos importa:
-         primero se fija la codificacion, despues se verifica la sesion.
-         ===================================================================== -->
+    <!-- FILTROS Se ejecutan antes de los servlets. -->
 
     <filter>
         <filter-name>FiltroCodificacion</filter-name>
@@ -73,10 +46,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- =====================================================================
-         SERVLETS
-         ===================================================================== -->
-
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>co.edu.sena.showroom.servlets.LoginServlet</servlet-class>
@@ -98,9 +67,7 @@
     <servlet>
         <servlet-name>TableroServlet</servlet-name>
         <servlet-class>co.edu.sena.showroom.servlets.TableroServlet</servlet-class>
-        <!-- load-on-startup positivo: Tomcat crea el servlet al arrancar la
-             aplicacion y no al recibir la primera peticion. Asi el primer
-             usuario no paga el costo de la inicializacion. -->
+        <!-- load-on-startup positivo: Tomcat crea el servlet al arrancar la aplicacion y no al recibir la primera peticion. -->
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -135,25 +102,17 @@
         <url-pattern>/cotizaciones</url-pattern>
     </servlet-mapping>
 
-    <!-- =====================================================================
-         SESION
-         ===================================================================== -->
-
     <session-config>
         <session-timeout>30</session-timeout>
         <cookie-config>
-            <!-- HttpOnly impide que JavaScript lea la cookie de sesion, lo que
-                 limita el dano de un ataque XSS. -->
+            <!-- HttpOnly impide que JavaScript lea la cookie de sesion, lo que limita el dano de un ataque XSS. -->
             <http-only>true</http-only>
         </cookie-config>
-        <!-- Solo cookies: asi el identificador de sesion nunca aparece en la
-             URL, donde quedaria en el historial y en los registros. -->
+        <!-- Solo cookies: asi el identificador de sesion nunca aparece en la URL, donde quedaria en el historial y en los registros. -->
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-    <!-- =====================================================================
-         PAGINA DE INICIO Y PAGINAS DE ERROR
-         ===================================================================== -->
+    <!-- PAGINA DE INICIO Y PAGINAS DE ERROR. -->
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -168,9 +127,7 @@
         <location>/WEB-INF/vistas/error/404.jsp</location>
     </error-page>
     <error-page>
-        <!-- Una pagina propia para los errores no previstos: el usuario ve un
-             mensaje entendible y no la traza de la excepcion, que ademas
-             revelaria detalles internos del sistema. -->
+        <!-- Pagina propia para los errores no previstos: el usuario no ve la traza de la excepcion. -->
         <exception-type>java.lang.Throwable</exception-type>
         <location>/WEB-INF/vistas/error/500.jsp</location>
     </error-page>

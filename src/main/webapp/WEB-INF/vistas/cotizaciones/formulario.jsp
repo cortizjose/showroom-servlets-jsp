@@ -1,20 +1,4 @@
-<%--
-  Formulario de nueva cotizacion.
-
-  Es el formulario mas complejo del modulo: envia VARIAS lineas en una sola
-  peticion. Cada fila del catalogo repite los campos con el mismo nombre:
-
-      <input type="hidden" name="productoId" value="3">
-      <input type="number" name="cantidad"   value="2">
-
-  El servlet los recibe como dos arreglos paralelos con
-  getParameterValues("productoId") y getParameterValues("cantidad"), y la
-  posicion i de uno corresponde a la posicion i del otro.
-
-  Observe que NO se envia el precio. El precio lo pone el servidor tomandolo
-  del catalogo. Los valores que se muestran aqui son informativos: si alguien
-  los modifica desde el navegador, el total guardado no cambia.
---%>
+<%-- Formulario de nueva cotizacion. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -115,8 +99,7 @@
                             </td>
                             <td class="centro">${producto.stock}</td>
                             <td class="centro">
-                                <%-- Los dos campos con el mismo nombre en cada fila:
-                                     asi se forman los arreglos paralelos. --%>
+                                <%-- Los dos campos con el mismo nombre en cada fila: asi se forman los arreglos paralelos. --%>
                                 <input type="hidden" name="productoId" value="${producto.id}">
                                 <input type="number" name="cantidad" value="0"
                                        min="0" max="${producto.stock}" class="cantidad">

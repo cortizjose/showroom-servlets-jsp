@@ -1,18 +1,11 @@
 @echo off
 REM ============================================================================
-REM  Inicia MySQL y Tomcat, y abre el modulo en el navegador.
-REM  Evidencia GA7-220501096-AA2-EV02  |  Jose Cortes
-REM
-REM  Uso: doble clic en este archivo.
-REM
-REM  Existe porque el panel de XAMPP necesita que la variable JAVA_HOME apunte
-REM  a un JDK, y en un equipo recien instalado esa variable esta vacia. Aqui se
-REM  define solo para esta ventana, sin modificar la configuracion del sistema.
+REM Inicia MySQL y Tomcat, y abre el modulo en el navegador.
 REM ============================================================================
 
 title Modulo Comercial del Showroom - servidor
 
-REM --- Ajuste estas rutas si su instalacion es distinta ----------------------
+REM --- Ajuste estas rutas si su instalacion es distinta --------------------------
 set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot"
 set "CATALINA_HOME=C:\xampp\tomcat"
 set "XAMPP=C:\xampp"
@@ -21,9 +14,7 @@ REM ---------------------------------------------------------------------------
 set "APP=showroom"
 set "PUERTO=8080"
 
-REM  Apache sirve phpMyAdmin. Escucha en el 8081 y no en el 80 porque en este
-REM  equipo el puerto 80 lo tiene tomado IIS, un servicio de Windows que no
-REM  conviene apagar.
+REM Apache sirve phpMyAdmin.
 set "PUERTO_APACHE=8081"
 
 echo.
@@ -41,7 +32,6 @@ if not exist "%JAVA_HOME%\bin\java.exe" (
     exit /b 1
 )
 
-REM --- 1. MySQL --------------------------------------------------------------
 echo  [1/5] Verificando MySQL...
 netstat -an | findstr ":3306" | findstr "LISTENING" > nul
 if errorlevel 1 (
@@ -52,7 +42,6 @@ if errorlevel 1 (
     echo        MySQL ya estaba encendido.
 )
 
-REM --- 2. Apache, que es quien sirve phpMyAdmin ------------------------------
 echo  [2/5] Verificando Apache (phpMyAdmin)...
 netstat -an | findstr ":%PUERTO_APACHE%" | findstr "LISTENING" > nul
 if errorlevel 1 (
@@ -63,7 +52,6 @@ if errorlevel 1 (
     echo        Apache ya estaba encendido.
 )
 
-REM --- 3. Puerto libre -------------------------------------------------------
 echo  [3/5] Verificando que el puerto %PUERTO% este libre...
 netstat -an | findstr ":%PUERTO%" | findstr "LISTENING" > nul
 if not errorlevel 1 (
@@ -74,7 +62,6 @@ if not errorlevel 1 (
     echo.
 )
 
-REM --- 4. Tomcat -------------------------------------------------------------
 echo  [4/5] Iniciando Tomcat...
 if not exist "%CATALINA_HOME%\webapps\%APP%\WEB-INF\web.xml" (
     echo.
@@ -87,7 +74,6 @@ if not exist "%CATALINA_HOME%\webapps\%APP%\WEB-INF\web.xml" (
 call "%CATALINA_HOME%\bin\startup.bat"
 timeout /t 12 /nobreak > nul
 
-REM --- 5. Navegador ----------------------------------------------------------
 echo  [5/5] Abriendo el navegador...
 start "" "http://localhost:%PUERTO%/%APP%/"
 

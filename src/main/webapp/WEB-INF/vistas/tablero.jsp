@@ -1,12 +1,4 @@
-<%--
-  Tablero de indicadores.
-
-  Los valores los calculo TableroServlet y los dejo como atributos de la
-  peticion. La vista solo los muestra: no abre conexiones ni consulta la base
-  de datos. Esa separacion es el fundamento del patron MVC.
-
-  Elementos de JSP usados: <jsp:include>, EL, <fmt:formatNumber> y <c:if>.
---%>
+<%-- Tablero de indicadores. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -60,8 +52,7 @@
     <div class="indicador ancho-doble">
         <span class="etiqueta">Monto aprobado</span>
         <span class="valor">
-            <%-- fmt:formatNumber da formato de moneda del lado del servidor.
-                 Es preferible a construir la cadena a mano. --%>
+            <%-- fmt:formatNumber da formato de moneda del lado del servidor. --%>
             <fmt:formatNumber value="${montoAprobado}" type="currency"
                               currencySymbol="$ " maxFractionDigits="0" />
         </span>

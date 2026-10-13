@@ -2,19 +2,7 @@ package co.edu.sena.showroom.modelo;
 
 import java.io.Serializable;
 
-/**
- * Usuario que puede iniciar sesion en el modulo.
- *
- * Esta clase es un POJO (Plain Old Java Object): solo atributos privados con
- * sus metodos de acceso. No conoce la base de datos ni el protocolo HTTP, de
- * modo que puede viajar del DAO al servlet y del servlet a la vista JSP sin
- * arrastrar dependencias.
- *
- * Implementa Serializable porque las instancias se guardan en la sesion HTTP y
- * Tomcat puede necesitar serializarlas al reiniciar la aplicacion.
- *
- * @author Jose Cortes
- */
+/** Usuario que puede iniciar sesion en el modulo. */
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,13 +30,7 @@ public class Usuario implements Serializable {
         this.activo = activo;
     }
 
-    /**
-     * Indica si el usuario tiene permiso de administrador.
-     *
-     * La pregunta se resuelve aqui y no en la vista: asi el JSP consulta
-     * ${usuario.administrador} sin repetir la comparacion de cadenas en cada
-     * pagina, y si manana cambia la regla se cambia en un solo lugar.
-     */
+    /** Indica si el usuario tiene permiso de administrador. */
     public boolean isAdministrador() {
         return ROL_ADMINISTRADOR.equals(this.rol);
     }

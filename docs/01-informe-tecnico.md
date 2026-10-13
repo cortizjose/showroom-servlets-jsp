@@ -301,7 +301,7 @@ así el módulo se ve igual sin conexión a internet.
 | Paquetes en minúscula y jerárquicos | `co.edu.sena.showroom.<capa>` |
 | Una responsabilidad por clase | Modelo, DAO, servlet, filtro y utilidad están separados |
 | Nombres en español | Coherente con el dominio y con el resto del proyecto formativo |
-| Javadoc en cada clase | Qué hace, y **por qué** se tomó la decisión de diseño |
+| Comentarios breves y al grano | Una línea por clase, y comentarios puntuales solo donde el código no se explica solo |
 | Indentación de 4 espacios | En Java, JSP, XML y SQL |
 | Sin SQL fuera de los DAO | Ningún servlet ni JSP contiene una consulta |
 | Sin lógica de negocio en las vistas | Las vistas consultan propiedades ya calculadas |

@@ -1,17 +1,4 @@
-<%--
-  Listado de clientes.
-
-  Contiene dos formularios HTML con metodos distintos, y la diferencia no es
-  arbitraria:
-
-    1. El buscador usa method="get". Es una consulta: la busqueda queda en la
-       URL (?busqueda=rojas), se puede guardar en favoritos, compartir o
-       recargar sin efectos.
-
-    2. El boton de desactivar usa method="post". Modifica la base de datos, asi
-       que no debe poder ejecutarse escribiendo una direccion ni repetirse al
-       recargar la pagina.
---%>
+<%-- Listado de clientes. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -30,7 +17,7 @@
     <a class="boton principal" href="${ruta}/clientes?accion=nuevo">Nuevo cliente</a>
 </div>
 
-<%-- Formulario de busqueda: GET --%>
+<%-- Formulario de busqueda: GET. --%>
 <form class="barra-filtros" method="get" action="${ruta}/clientes">
     <input type="text" name="busqueda" value="<c:out value='${busqueda}' />"
            placeholder="Buscar por nombre o documento" maxlength="60">
@@ -68,8 +55,7 @@
                 </tr>
             </thead>
             <tbody>
-                <%-- c:forEach recorre la lista que dejo el servlet. varStatus
-                     da acceso al indice, que se usa para numerar las filas. --%>
+                <%-- c:forEach recorre la lista que dejo el servlet. --%>
                 <c:forEach var="cliente" items="${clientes}" varStatus="fila">
                     <tr class="${cliente.activo ? '' : 'inactivo'}">
                         <td><code><c:out value="${cliente.documento}" /></code></td>
@@ -93,7 +79,7 @@
                             </a>
 
                             <c:if test="${cliente.activo}">
-                                <%-- POST para una operacion que modifica datos --%>
+                                <%-- POST para una operacion que modifica datos. --%>
                                 <form method="post" action="${ruta}/clientes" class="en-linea"
                                       onsubmit="return confirm('Desea desactivar este cliente?');">
                                     <input type="hidden" name="accion" value="desactivar">

@@ -11,27 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Servlet de gestion de clientes: listar, crear, editar y desactivar.
- *
- * Reparto de responsabilidades entre los dos metodos HTTP:
- *
- *   doGet  -> operaciones de LECTURA: el listado, el formulario vacio y el
- *             formulario cargado con un cliente para editar. El filtro de
- *             busqueda tambien viaja por GET, y eso es deseable: la URL
- *             resultante se puede guardar en favoritos o compartir.
- *
- *   doPost -> operaciones de ESCRITURA: guardar y desactivar. Van por POST
- *             porque modifican la base de datos y no deben repetirse al
- *             recargar la pagina ni quedar en el historial.
- *
- * Despues de cada POST exitoso se hace sendRedirect y no forward. Es el patron
- * POST-Redirect-GET: si el servidor respondiera directamente al POST, al
- * pulsar F5 el navegador volveria a enviarlo y se crearia un cliente
- * duplicado.
- *
- * @author Jose Cortes
- */
+/** Servlet de gestion de clientes: listar, crear, editar y desactivar. */
 public class ClienteServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -99,7 +79,6 @@ public class ClienteServlet extends HttpServlet {
     }
 
     // -------------------------------------------------------------------------
-    // Operaciones
     // -------------------------------------------------------------------------
 
     private void listar(HttpServletRequest peticion, HttpServletResponse respuesta)
@@ -130,13 +109,7 @@ public class ClienteServlet extends HttpServlet {
                 .forward(peticion, respuesta);
     }
 
-    /**
-     * Guarda un cliente nuevo o actualiza uno existente.
-     *
-     * El mismo formulario sirve para las dos cosas: si llega un id, se
-     * actualiza; si no, se inserta. Asi no hay dos vistas casi identicas que
-     * mantener en paralelo.
-     */
+    /** Guarda un cliente nuevo o actualiza uno existente. */
     private void guardar(HttpServletRequest peticion, HttpServletResponse respuesta)
             throws SQLException, ServletException, IOException {
 
@@ -153,17 +126,14 @@ public class ClienteServlet extends HttpServlet {
         cliente.setDireccion(validador.opcional("direccion", "direccion", peticion.getParameter("direccion"), 160));
         cliente.setActivo(peticion.getParameter("activo") != null);
 
-        // Regla de negocio: el documento no se puede repetir. Se consulta
-        // excluyendo el propio registro, para que al editar no choque consigo
-        // mismo.
+        // Regla de negocio: el documento no se puede repetir.
         if (!cliente.getDocumento().isEmpty()
                 && this.clienteDAO.existeDocumento(cliente.getDocumento(), id)) {
             validador.agregarError("documento", "Ya existe otro cliente con ese documento.");
         }
 
         if (validador.tieneErrores()) {
-            // Se devuelve el formulario con los datos escritos y los errores,
-            // para que el usuario corrija sin volver a teclear todo.
+            // Se devuelve el formulario con los datos escritos y los errores, para que el usuario corrija sin volver a teclear todo.
             peticion.setAttribute("cliente", cliente);
             peticion.setAttribute("errores", validador.getErrores());
             respuesta.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -182,16 +152,9 @@ public class ClienteServlet extends HttpServlet {
     }
 
     // -------------------------------------------------------------------------
-    // Auxiliares
     // -------------------------------------------------------------------------
 
-    /**
-     * Lee el parametro id y lo convierte a entero.
-     *
-     * Devuelve 0 cuando no viene o no es numerico. Nunca se confia en que el
-     * parametro tenga el formato esperado: cualquiera puede escribir
-     * ?id=abc en la barra de direcciones.
-     */
+    /** Lee el parametro id y lo convierte a entero. */
     private int obtenerId(HttpServletRequest peticion) {
         String valor = peticion.getParameter("id");
         if (valor == null || valor.trim().isEmpty()) {

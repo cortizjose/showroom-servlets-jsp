@@ -34,8 +34,7 @@
 <c:choose>
     <c:when test="${empty cotizaciones}">
         <p class="vacio">
-            <%-- El mensaje cambia segun haya o no un filtro aplicado: decirle
-                 "no coincide con el filtro" a quien no filtro nada confunde. --%>
+            <%-- El mensaje cambia segun haya o no un filtro aplicado: decirle "no coincide con el filtro" a quien no filtro nada. --%>
             <c:choose>
                 <c:when test="${not empty estadoSeleccionado}">
                     Ninguna cotizaci&oacute;n est&aacute; en estado
@@ -69,8 +68,7 @@
                         <td><strong><c:out value="${cotizacion.clienteNombre}" /></strong></td>
                         <td><c:out value="${cotizacion.usuarioNombre}" /></td>
                         <td>
-                            <%-- fmt:formatDate da formato a la fecha en el
-                                 servidor, sin construir la cadena a mano. --%>
+                            <%-- fmt:formatDate da formato a la fecha en el servidor, sin construir la cadena a mano. --%>
                             <fmt:formatDate value="${cotizacion.fechaCreacion}"
                                             pattern="dd/MM/yyyy HH:mm" />
                         </td>

@@ -13,17 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Servlet del catalogo de productos.
- *
- * Ademas del CRUD, demuestra el control de acceso por rol: consultar el
- * catalogo lo puede hacer cualquier usuario autenticado, pero crear y editar
- * productos esta reservado al administrador. La comprobacion se hace en el
- * SERVIDOR; ocultar el boton en la vista es comodidad para el usuario, no
- * seguridad.
- *
- * @author Jose Cortes
- */
+/** Servlet del catalogo de productos. */
 public class ProductoServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -164,7 +154,6 @@ public class ProductoServlet extends HttpServlet {
 
     // -------------------------------------------------------------------------
 
-    /** Lee el usuario de la sesion y comprueba su rol. */
     private boolean esAdministrador(HttpServletRequest peticion) {
         HttpSession sesion = peticion.getSession(false);
         if (sesion == null) {
@@ -176,7 +165,6 @@ public class ProductoServlet extends HttpServlet {
 
     private void rechazar(HttpServletResponse respuesta) throws IOException {
         // 403 Forbidden: el usuario esta identificado, pero su rol no alcanza.
-        // Distinto de 401, que significa "no se sabe quien es".
         respuesta.sendError(HttpServletResponse.SC_FORBIDDEN,
                 "Solo un administrador puede modificar el catalogo.");
     }

@@ -1,17 +1,4 @@
-<%--
-  Encabezado comun a todas las paginas internas.
-
-  Elementos de JSP que se usan aqui:
-    - Directiva <%@ page %>      : configura la pagina (codificacion, lenguaje).
-    - Directiva <%@ taglib %>    : habilita la libreria JSTL.
-    - Lenguaje de expresiones EL : ${usuario.nombre}
-    - Objeto implicito pageContext para construir rutas que no dependan del
-      nombre con que se despliegue la aplicacion.
-
-  Se incluye con <jsp:include> desde cada vista, de modo que el menu se escribe
-  una sola vez. Si manana se agrega una opcion, se agrega aqui y aparece en
-  todas las paginas.
---%>
+<%-- Encabezado comun a todas las paginas internas. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -42,8 +29,7 @@
         </nav>
 
         <div class="sesion">
-            <%-- El usuario se lee de la sesion con EL. sessionScope expone los
-                 atributos que el servlet guardo con sesion.setAttribute(). --%>
+            <%-- El usuario se lee de la sesion con EL. --%>
             <span class="usuario">
                 <c:out value="${sessionScope.usuario.nombre}" />
                 <small><c:out value="${sessionScope.usuario.rol}" /></small>
@@ -55,8 +41,7 @@
 
 <main class="contenido">
 
-    <%-- Mensajes de resultado. Llegan como parametro en la URL despues de una
-         redireccion, segun el patron POST-Redirect-GET. --%>
+    <%-- Mensajes de resultado. --%>
     <c:choose>
         <c:when test="${param.mensaje eq 'creado'}">
             <p class="aviso exito">El registro se cre&oacute; correctamente.</p>

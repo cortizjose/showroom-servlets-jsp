@@ -1,14 +1,4 @@
-<%--
-  Formulario de cliente: sirve para crear y para editar.
-
-  Como distingue los dos casos: el servlet deja en la peticion un objeto
-  Cliente. Si es nuevo, su id vale 0 y la propiedad nuevo devuelve true. Un
-  campo oculto lleva el id de vuelta al servidor cuando se trata de una
-  edicion.
-
-  Mantener una sola vista para ambos casos evita tener dos archivos casi
-  identicos que con el tiempo se desincronizan.
---%>
+<%-- Formulario de cliente: sirve para crear y para editar. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -31,7 +21,7 @@
     <a class="boton tenue" href="${ruta}/clientes">Volver al listado</a>
 </div>
 
-<%-- Resumen de errores de validacion. Los valida el servlet, no el navegador. --%>
+<%-- Resumen de errores de validacion. --%>
 <c:if test="${not empty errores}">
     <div class="aviso error">
         <strong>Revise los siguientes campos:</strong>
@@ -45,7 +35,7 @@
 
 <form method="post" action="${ruta}/clientes" class="formulario" novalidate>
 
-    <%-- El id solo viaja cuando se esta editando --%>
+    <%-- El id solo viaja cuando se esta editando. --%>
     <c:if test="${not cliente.nuevo}">
         <input type="hidden" name="id" value="${cliente.id}">
     </c:if>
@@ -104,9 +94,6 @@
     </div>
 
     <div class="campo casilla">
-        <%-- Una casilla no marcada NO se envia en la peticion. Por eso el
-             servlet comprueba si el parametro llego, en lugar de leer su
-             valor. --%>
         <label>
             <input type="checkbox" name="activo" value="1" ${cliente.activo ? 'checked' : ''}>
             Cliente activo

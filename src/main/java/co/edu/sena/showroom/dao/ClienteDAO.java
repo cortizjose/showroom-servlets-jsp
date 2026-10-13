@@ -10,20 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Acceso a datos de la tabla clientes.
- *
- * @author Jose Cortes
- */
+/** Acceso a datos de la tabla clientes. */
 public class ClienteDAO {
 
-    /**
-     * Lista los clientes, con un filtro opcional de busqueda.
-     *
-     * El filtro se aplica con LIKE sobre nombre y documento. El comodin % se
-     * agrega al VALOR del parametro, no a la sentencia: asi la consulta sigue
-     * siendo preparada y el texto del usuario nunca se interpreta como SQL.
-     */
+    /** Lista los clientes, con un filtro opcional de busqueda. */
     public List<Cliente> listar(String busqueda) throws SQLException {
         List<Cliente> clientes = new ArrayList<Cliente>();
 
@@ -87,13 +77,6 @@ public class ClienteDAO {
         }
     }
 
-    /**
-     * Comprueba si el documento ya esta registrado en otro cliente.
-     *
-     * El parametro idExcluido permite reutilizar el metodo al editar: al
-     * actualizar un cliente, su propio documento no debe contarse como
-     * duplicado. Se pasa 0 cuando el cliente es nuevo.
-     */
     public boolean existeDocumento(String documento, int idExcluido) throws SQLException {
         String sql = "SELECT COUNT(*) FROM clientes WHERE documento = ? AND id <> ?";
 
@@ -109,12 +92,7 @@ public class ClienteDAO {
         }
     }
 
-    /**
-     * Inserta un cliente y devuelve el identificador que genero la base.
-     *
-     * Se pide RETURN_GENERATED_KEYS para no tener que hacer una segunda
-     * consulta averiguando el id recien creado.
-     */
+    /** Inserta un cliente y devuelve el identificador que genero la base. */
     public int insertar(Cliente cliente) throws SQLException {
         String sql = "INSERT INTO clientes (documento, nombre, correo, telefono, ciudad, direccion, activo) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -147,13 +125,7 @@ public class ClienteDAO {
         }
     }
 
-    /**
-     * Baja logica: el cliente se marca como inactivo, no se borra.
-     *
-     * Borrarlo rompería las cotizaciones que lo referencian y el historial
-     * comercial quedaria incompleto. Inactivo significa que no admite
-     * documentos nuevos, pero los anteriores siguen consultables.
-     */
+    /** Baja logica: el cliente se marca como inactivo, no se borra. */
     public boolean desactivar(int id) throws SQLException {
         String sql = "UPDATE clientes SET activo = 0 WHERE id = ?";
 

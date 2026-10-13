@@ -1,13 +1,5 @@
 -- =============================================================================
--- Base de datos del Modulo Comercial del Showroom
--- Evidencia GA7-220501096-AA2-EV02  |  Autor: Jose Cortes
---
--- Ejecucion:
---   1. Abrir phpMyAdmin:  http://localhost/phpmyadmin
---   2. Pestana "Importar" y seleccionar este archivo.
---
---   O por consola:
---   C:\xampp\mysql\bin\mysql.exe -u root < database\esquema.sql
+-- Base de datos del Modulo Comercial del Showroom Evidencia GA7-220501096-AA2-EV02 | Autor: Jose Cortes Ejecucion: 1.
 -- =============================================================================
 
 DROP DATABASE IF EXISTS showroom_servlets;
@@ -18,11 +10,7 @@ CREATE DATABASE showroom_servlets
 USE showroom_servlets;
 
 -- -----------------------------------------------------------------------------
--- usuarios
---
--- La contrasena no se guarda: se guarda su resumen SHA-256 junto con una sal
--- distinta para cada usuario. Ni el administrador de la base de datos puede
--- leer las contrasenas.
+-- usuarios La contrasena no se guarda: se guarda su resumen SHA-256 junto con una sal distinta para cada usuario.
 -- -----------------------------------------------------------------------------
 CREATE TABLE usuarios (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -38,7 +26,6 @@ CREATE TABLE usuarios (
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------------------------------
--- categorias
 -- -----------------------------------------------------------------------------
 CREATE TABLE categorias (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,10 +34,7 @@ CREATE TABLE categorias (
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------------------------------
--- productos
---
--- precio es DECIMAL y no FLOAT: los tipos de punto flotante no representan los
--- valores decimales de forma exacta, y en dinero ese error se acumula.
+-- productos precio es DECIMAL y no FLOAT: los tipos de punto flotante no representan los valores decimales de forma.
 -- -----------------------------------------------------------------------------
 CREATE TABLE productos (
     id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,7 +54,6 @@ CREATE TABLE productos (
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------------------------------
--- clientes
 -- -----------------------------------------------------------------------------
 CREATE TABLE clientes (
     id        INT AUTO_INCREMENT PRIMARY KEY,
@@ -86,11 +69,7 @@ CREATE TABLE clientes (
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------------------------------
--- cotizaciones
---
--- Los totales quedan guardados en la cabecera. No se recalculan al consultar,
--- porque una cotizacion es un documento historico: debe seguir mostrando los
--- valores que se le ofrecieron al cliente, aunque hoy los precios sean otros.
+-- cotizaciones Los totales quedan guardados en la cabecera.
 -- -----------------------------------------------------------------------------
 CREATE TABLE cotizaciones (
     id             INT AUTO_INCREMENT PRIMARY KEY,
@@ -110,10 +89,7 @@ CREATE TABLE cotizaciones (
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------------------------------
--- detalle_cotizaciones
---
--- ON DELETE CASCADE: si se borrara una cotizacion, sus lineas se van con ella.
--- Nunca deben quedar lineas huerfanas apuntando a un documento inexistente.
+-- detalle_cotizaciones ON DELETE CASCADE: si se borrara una cotizacion, sus lineas se van con ella.
 -- -----------------------------------------------------------------------------
 CREATE TABLE detalle_cotizaciones (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -130,12 +106,9 @@ CREATE TABLE detalle_cotizaciones (
 ) ENGINE = InnoDB;
 
 -- =============================================================================
--- DATOS DE EJEMPLO
+-- DATOS DE EJEMPLO.
 -- =============================================================================
 
--- Usuarios. Las credenciales de prueba son:
---   admin  / Admin2025   (administrador: puede modificar el catalogo)
---   asesor / Asesor2025  (asesor: clientes y cotizaciones)
 INSERT INTO usuarios (usuario, nombre, correo, sal, contrasena_hash, rol) VALUES
 ('admin',  'Jose Cortes',    'admin@showroom.test',
  '4a1b16f5a0fcf12e427e20a293a45fca',
@@ -166,7 +139,7 @@ INSERT INTO clientes (documento, nombre, correo, telefono, ciudad, direccion) VA
 ('52987456',   'Diana Patricia Luna',  'dpluna@correo.test',   '3156784321', 'Cali',     'Avenida 6N # 23-12');
 
 -- -----------------------------------------------------------------------------
--- Verificacion rapida
+-- Verificacion rapida.
 -- -----------------------------------------------------------------------------
 SELECT 'usuarios'  AS tabla, COUNT(*) AS registros FROM usuarios
 UNION ALL SELECT 'categorias', COUNT(*) FROM categorias

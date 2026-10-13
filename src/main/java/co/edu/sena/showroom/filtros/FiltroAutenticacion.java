@@ -15,19 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Filtro que exige sesion activa para entrar al modulo.
- *
- * Un filtro se ejecuta ANTES que cualquier servlet, de modo que la
- * comprobacion se escribe una sola vez en lugar de repetirla al inicio de cada
- * doGet y cada doPost. Si manana se agrega un servlet nuevo, queda protegido
- * sin tocar su codigo: por eso un olvido no deja un endpoint abierto.
- *
- * Las rutas publicas se declaran en una lista explicita. Es la regla al revés
- * de la habitual: todo esta cerrado salvo lo que se abra a proposito.
- *
- * @author Jose Cortes
- */
+/** Filtro que exige sesion activa para entrar al modulo. */
 public class FiltroAutenticacion implements Filter {
 
     private static final List<String> RUTAS_PUBLICAS = Arrays.asList(
@@ -61,8 +49,7 @@ public class FiltroAutenticacion implements Filter {
             return;
         }
 
-        // Sin sesion: se envia al login. Se agrega el parametro destino para
-        // devolver al usuario a donde queria ir, despues de autenticarse.
+        // Sin sesion: se envia al login.
         respuestaHttp.sendRedirect(peticionHttp.getContextPath() + "/login?error=sesion-requerida");
     }
 

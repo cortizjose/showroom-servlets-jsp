@@ -1,15 +1,3 @@
-<%--
-  Catalogo de productos.
-
-  El formulario de filtros combina dos parametros (texto y categoria) en una
-  sola peticion GET, y la vista recuerda lo seleccionado leyendo los atributos
-  que dejo el servlet.
-
-  Control de acceso en la vista: los botones de crear y editar solo se dibujan
-  para el administrador. Eso es comodidad, no seguridad: quien escriba la URL a
-  mano recibe un 403 porque ProductoServlet tambien lo comprueba en el
-  servidor.
---%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -37,8 +25,7 @@
 
     <select name="categoria">
         <option value="">Todas las categor&iacute;as</option>
-        <%-- Se recorre el Map de categorias. La clave es el id y el valor el
-             nombre; se vuelve a marcar la opcion elegida. --%>
+        <%-- Se recorre el Map de categorias. --%>
         <c:forEach var="categoria" items="${categorias}">
             <option value="${categoria.key}"
                     ${categoriaSeleccionada eq categoria.key ? 'selected' : ''}>
@@ -89,8 +76,7 @@
                                               currencySymbol="$ " maxFractionDigits="0" />
                         </td>
                         <td class="centro">
-                            <%-- isStockBajo() se resolvio en la clase Producto.
-                                 La vista solo pregunta, no calcula. --%>
+                            <%-- isStockBajo() se resolvio en la clase Producto. --%>
                             <c:choose>
                                 <c:when test="${producto.stockBajo}">
                                     <span class="estado alerta" title="Por debajo del minimo (${producto.stockMinimo})">

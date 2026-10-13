@@ -1,6 +1,4 @@
-<%--
-  Formulario de producto. Solo lo alcanza el rol administrador.
---%>
+<%-- Formulario de producto. --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -73,8 +71,7 @@
 
         <div class="campo ${not empty errores['precio'] ? 'con-error' : ''}">
             <label for="precio">Precio *</label>
-            <%-- step="0.01" permite centavos; min="0" impide negativos en el
-                 navegador. El servidor lo vuelve a comprobar de todos modos. --%>
+            <%-- step="0.01" permite centavos; min="0" impide negativos en el navegador. --%>
             <input type="number" id="precio" name="precio" value="${producto.precio}"
                    step="0.01" min="0" required>
             <c:if test="${not empty errores['precio']}">

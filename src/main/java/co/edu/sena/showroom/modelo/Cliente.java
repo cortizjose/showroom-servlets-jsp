@@ -2,11 +2,7 @@ package co.edu.sena.showroom.modelo;
 
 import java.io.Serializable;
 
-/**
- * Cliente del showroom.
- *
- * @author Jose Cortes
- */
+/** Cliente del showroom. */
 public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -3,16 +3,7 @@ package co.edu.sena.showroom.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * Producto del catalogo del showroom.
- *
- * El precio se maneja con BigDecimal y no con double. Un double no puede
- * representar exactamente valores como 0.1, y en una cotizacion ese error de
- * redondeo se multiplica por la cantidad y se arrastra hasta el total. Para
- * dinero se usa BigDecimal.
- *
- * @author Jose Cortes
- */
+/** Producto del catalogo del showroom. */
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,10 +24,7 @@ public class Producto implements Serializable {
         this.estado = "activo";
     }
 
-    /**
-     * Indica si el producto esta por debajo de su nivel minimo de reposicion.
-     * La vista lo usa para resaltar la fila en el listado.
-     */
+    /** Indica si el producto esta por debajo de su nivel minimo de reposicion. */
     public boolean isStockBajo() {
         return this.stock <= this.stockMinimo;
     }

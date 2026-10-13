@@ -12,11 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Acceso a datos del catalogo de productos.
- *
- * @author Jose Cortes
- */
+/** Acceso a datos del catalogo de productos. */
 public class ProductoDAO {
 
     /** Columnas y JOIN comunes a todas las consultas de lectura. */
@@ -25,13 +21,7 @@ public class ProductoDAO {
             + "c.nombre AS categoria_nombre, p.precio, p.stock, p.stock_minimo, p.estado "
             + "FROM productos p INNER JOIN categorias c ON c.id = p.categoria_id ";
 
-    /**
-     * Lista el catalogo con dos filtros opcionales: texto y categoria.
-     *
-     * Los parametros se van agregando a una lista en el mismo orden en que se
-     * agregan las condiciones al SQL. Numerar los indices a mano es una fuente
-     * habitual de errores cuando los filtros son opcionales.
-     */
+    /** Lista el catalogo con dos filtros opcionales: texto y categoria. */
     public List<Producto> listar(String busqueda, int categoriaId) throws SQLException {
         List<Producto> productos = new ArrayList<Producto>();
         List<Object> parametros = new ArrayList<Object>();

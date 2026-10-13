@@ -8,20 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
-/**
- * Fija UTF-8 en la peticion y en la respuesta.
- *
- * Sin esto, un nombre como "Munoz Pena" escrito con enie y con tilde llega al
- * servlet convertido en caracteres raros, porque Tomcat interpreta el cuerpo
- * del POST con una codificacion distinta a la que uso el navegador.
- *
- * Importante: setCharacterEncoding debe llamarse ANTES de leer el primer
- * parametro. Si se llama despues, ya no tiene efecto. Hacerlo en un filtro
- * garantiza que ocurra primero, antes de que cualquier servlet toque la
- * peticion.
- *
- * @author Jose Cortes
- */
+/** Fija UTF-8 en la peticion y en la respuesta. */
 public class FiltroCodificacion implements Filter {
 
     private String codificacion = "UTF-8";

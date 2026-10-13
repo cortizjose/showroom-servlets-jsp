@@ -9,8 +9,7 @@
         </span>
         <span>
             Evidencia GA7-220501096-AA2-EV02 &middot; Jos&eacute; Cort&eacute;s &middot;
-            <%-- Expresion JSP: se evalua en el servidor cada vez que se pide la
-                 pagina. Muestra el motor de servlets sobre el que corre. --%>
+            <%-- Expresion JSP: se evalua en el servidor cada vez que se pide la pagina. --%>
             <%= application.getServerInfo() %>
         </span>
     </div>
