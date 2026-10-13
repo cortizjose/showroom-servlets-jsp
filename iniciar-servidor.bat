@@ -21,6 +21,11 @@ REM ---------------------------------------------------------------------------
 set "APP=showroom"
 set "PUERTO=8080"
 
+REM  Apache sirve phpMyAdmin. Escucha en el 8081 y no en el 80 porque en este
+REM  equipo el puerto 80 lo tiene tomado IIS, un servicio de Windows que no
+REM  conviene apagar.
+set "PUERTO_APACHE=8081"
+
 echo.
 echo ===========================================================================
 echo   MODULO COMERCIAL DEL SHOWROOM
@@ -37,7 +42,7 @@ if not exist "%JAVA_HOME%\bin\java.exe" (
 )
 
 REM --- 1. MySQL --------------------------------------------------------------
-echo  [1/4] Verificando MySQL...
+echo  [1/5] Verificando MySQL...
 netstat -an | findstr ":3306" | findstr "LISTENING" > nul
 if errorlevel 1 (
     echo        MySQL apagado. Iniciandolo...
@@ -47,8 +52,19 @@ if errorlevel 1 (
     echo        MySQL ya estaba encendido.
 )
 
-REM --- 2. Puerto libre -------------------------------------------------------
-echo  [2/4] Verificando que el puerto %PUERTO% este libre...
+REM --- 2. Apache, que es quien sirve phpMyAdmin ------------------------------
+echo  [2/5] Verificando Apache (phpMyAdmin)...
+netstat -an | findstr ":%PUERTO_APACHE%" | findstr "LISTENING" > nul
+if errorlevel 1 (
+    echo        Apache apagado. Iniciandolo...
+    start "" /b "%XAMPP%\apache\bin\httpd.exe"
+    timeout /t 5 /nobreak > nul
+) else (
+    echo        Apache ya estaba encendido.
+)
+
+REM --- 3. Puerto libre -------------------------------------------------------
+echo  [3/5] Verificando que el puerto %PUERTO% este libre...
 netstat -an | findstr ":%PUERTO%" | findstr "LISTENING" > nul
 if not errorlevel 1 (
     echo.
@@ -58,8 +74,8 @@ if not errorlevel 1 (
     echo.
 )
 
-REM --- 3. Tomcat -------------------------------------------------------------
-echo  [3/4] Iniciando Tomcat...
+REM --- 4. Tomcat -------------------------------------------------------------
+echo  [4/5] Iniciando Tomcat...
 if not exist "%CATALINA_HOME%\webapps\%APP%\WEB-INF\web.xml" (
     echo.
     echo        La aplicacion no esta desplegada. Ejecute primero:
@@ -71,13 +87,14 @@ if not exist "%CATALINA_HOME%\webapps\%APP%\WEB-INF\web.xml" (
 call "%CATALINA_HOME%\bin\startup.bat"
 timeout /t 12 /nobreak > nul
 
-REM --- 4. Navegador ----------------------------------------------------------
-echo  [4/4] Abriendo el navegador...
+REM --- 5. Navegador ----------------------------------------------------------
+echo  [5/5] Abriendo el navegador...
 start "" "http://localhost:%PUERTO%/%APP%/"
 
 echo.
 echo ===========================================================================
 echo   Modulo disponible en:  http://localhost:%PUERTO%/%APP%/
+echo   phpMyAdmin en:         http://localhost:%PUERTO_APACHE%/phpmyadmin/
 echo.
 echo   Usuario  admin   Contrasena  Admin2025    (administrador)
 echo   Usuario  asesor  Contrasena  Asesor2025   (asesor)

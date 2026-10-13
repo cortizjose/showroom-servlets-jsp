@@ -21,7 +21,7 @@ Aprendiz: José Cortés · Duración prevista: **8 a 10 minutos**
 | ☐ | Si hubo ensayos: volver a importar `database/esquema.sql` para empezar con datos limpios. |
 | ☐ | **VS Code** abierto con las 7 pestañas del bloque 3, y **clic en la primera** (`Cliente.java`) para que quede activa. |
 | ☐ | En VS Code, comprobar que se vean los **números de línea** (`Ctrl+,` y buscar *line numbers*). |
-| ☐ | Tener abiertos también: el panel de XAMPP, phpMyAdmin y una terminal en la carpeta del proyecto. |
+| ☐ | Tener abiertos también: el panel de XAMPP, **phpMyAdmin en `http://localhost:8081/phpmyadmin/`** y una terminal en la carpeta del proyecto. |
 | ☐ | Cerrar pestañas y ventanas ajenas. Dejar solo navegador, explorador de archivos y VS Code. |
 | ☐ | Zoom del navegador al **110 %** (`Ctrl` + `+`) y de VS Code a **120 %**. |
 | ☐ | Grabar con **Win + G**, con audio de micrófono. |
@@ -46,12 +46,20 @@ seleccionarla entera.
 
 ---
 
+> **Sobre phpMyAdmin en este equipo.** Responde en
+> **`http://localhost:8081/phpmyadmin/`**, no en la dirección habitual sin
+> puerto: el puerto 80 lo tiene tomado IIS, un servicio de Windows que no
+> conviene apagar, así que Apache quedó configurado en el 8081.
+> `iniciar-servidor.bat` lo levanta solo. Si prefiere una ventana más limpia
+> para grabar, **HeidiSQL** también está instalado y sirve igual: conexión a
+> `127.0.0.1`, usuario `root`, sin contraseña, puerto `3306`.
+
 ## Bloque 2 — Cómo se pone en marcha (0:40 – 2:00)
 
 | Pantalla | Señalo | Digo |
 |---|---|---|
-| **Panel de control de XAMPP**. | Las filas de **MySQL** y **Tomcat**, con su botón en *Stop* (es decir, encendidos). | «El módulo necesita dos servicios: MySQL para los datos y Tomcat, que es el contenedor de servlets. Los dos vienen en XAMPP y están encendidos.» |
-| **phpMyAdmin**, base `showroom_servlets` seleccionada. | La lista de las **6 tablas** en la columna izquierda, de arriba abajo. | «La base se crea importando un solo archivo, `database/esquema.sql`. Son seis tablas: usuarios, categorías, productos, clientes, cotizaciones y el detalle de las cotizaciones.» |
+| **Panel de control de XAMPP**. | Las filas de **MySQL**, **Apache** y **Tomcat**, con su botón en *Stop* (es decir, encendidos). | «El módulo necesita MySQL para los datos y Tomcat, que es el contenedor de servlets. Apache solo lo uso para abrir phpMyAdmin y mostrarles la base. Los tres vienen en XAMPP.» |
+| **phpMyAdmin** (`localhost:8081/phpmyadmin`), base `showroom_servlets` seleccionada. | La lista de las **6 tablas** en la columna izquierda, de arriba abajo. | «La base se crea importando un solo archivo, `database/esquema.sql`. Son seis tablas: usuarios, categorías, productos, clientes, cotizaciones y el detalle de las cotizaciones.» |
 | phpMyAdmin → tabla **`usuarios`** → pestaña *Examinar*. | Las columnas **`sal`** y **`contrasena_hash`** de la primera fila. | «Fíjense en algo importante: aquí **no hay contraseñas**. Hay una sal y un hash. Ni yo, que administro la base, puedo leer la contraseña de nadie.» |
 | phpMyAdmin → tabla **`productos`** → pestaña *Estructura*. | La fila de la columna **`precio`**, donde dice `decimal(12,2)`. | «Y los precios son `DECIMAL`, no `FLOAT`. Un número de punto flotante no representa los decimales de forma exacta, y ese error se multiplica por la cantidad y se arrastra hasta el total. Para dinero se usa decimal.» |
 | **Explorador de archivos** en la carpeta del proyecto. | El archivo **`compilar.bat`**. | «Para compilar no uso Maven ni Gradle: este proyecto tiene solo dos dependencias y viajan dentro de él, así que compila con `javac` en cualquier equipo con un JDK, sin descargar nada.» |
@@ -234,7 +242,7 @@ avanza de izquierda a derecha haciendo clic en cada una.
 |---|---|---|
 | **Clientes**, con `' OR 1=1 --` escrito en el buscador. | El texto dentro del campo de búsqueda. | «Ahora una carga de inyección SQL. Si la consulta estuviera mal hecha, esto devolvería todos los registros o rompería la aplicación.» |
 | Enviar. Resultado vacío. | El mensaje de **ningún resultado**. | «Cero resultados y ningún error: buscó, literalmente, un cliente que se llame así. El texto se trató como dato, no como código.» |
-| phpMyAdmin → tabla `clientes` → *Examinar*. | El **conteo de filas**, intacto. | «Y la tabla está intacta.» |
+| phpMyAdmin (`localhost:8081`) → tabla `clientes` → *Examinar*. | El **conteo de filas**, intacto. | «Y la tabla está intacta.» |
 
 ### Prueba 9c — Control por rol
 
@@ -328,7 +336,8 @@ avanza de izquierda a derecha haciendo clic en cada una.
 | Los montos salen como `6520000.00` | Se desplegó una versión vieja: ejecutar `compilar.bat desplegar`. |
 | Tomcat no arranca: `Unable to establish loopback connection` | Verificar que `conf\server.xml` tenga `protocol="org.apache.coyote.http11.Http11Nio2Protocol"` en el conector del 8080. |
 | El puerto 8080 está ocupado | Cerrar Docker Desktop, o cambiar el puerto en `server.xml`. |
-| Quiero volver a empezar con datos limpios | Importar de nuevo `database/esquema.sql` en phpMyAdmin. |
+| phpMyAdmin no abre | Apache apagado. `iniciar-servidor.bat` lo levanta; también se inicia desde el panel de XAMPP. Recuerde que es el puerto **8081**. |
+| Quiero volver a empezar con datos limpios | Importar de nuevo `database/esquema.sql` en phpMyAdmin (`localhost:8081/phpmyadmin`). |
 
 ---
 

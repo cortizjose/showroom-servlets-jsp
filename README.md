@@ -26,8 +26,13 @@ Hay dos roles: **administrador** (todo, incluido modificar el catálogo) y
 
 ### Paso 1 — Crear la base de datos
 
-Abrir `http://localhost/phpmyadmin` → pestaña **Importar** → seleccionar
-`database/esquema.sql` → **Continuar**.
+Abrir phpMyAdmin → pestaña **Importar** → seleccionar `database/esquema.sql`
+→ **Continuar**.
+
+> La dirección habitual es `http://localhost/phpmyadmin`. Si el puerto 80 está
+> ocupado por otro servicio (en el equipo de desarrollo lo tiene IIS), Apache se
+> configura en otro puerto y phpMyAdmin queda, por ejemplo, en
+> `http://localhost:8081/phpmyadmin`.
 
 O por consola:
 
@@ -194,6 +199,7 @@ Está probado con una carga de inyección en el buscador.
 | `No se encontro el driver JDBC de MySQL` | Falta `mysql-connector-j-8.4.0.jar` en `WEB-INF/lib`. |
 | La página de error dice que no hay conexión con la base | MySQL no está iniciado en XAMPP, o no se importó `database/esquema.sql`. |
 | Los montos aparecen como `6520000.00` | Falta el `context-param` `javax.servlet.jsp.jstl.fmt.locale` en `web.xml`. |
+| phpMyAdmin no abre en `localhost/phpmyadmin` | Apache no pudo tomar el puerto 80, normalmente porque lo ocupa IIS u otro servicio. Cambie `Listen 80` y `ServerName localhost:80` por `8081` en `apache\conf\httpd.conf` y abra `localhost:8081/phpmyadmin`. |
 
 ---
 

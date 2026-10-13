@@ -20,6 +20,9 @@ if not errorlevel 1 (
     taskkill /F /IM java.exe > nul 2>&1
 )
 
+echo  Deteniendo Apache...
+taskkill /F /IM httpd.exe > nul 2>&1
+
 echo  Listo. MySQL sigue encendido; se apaga desde el panel de XAMPP.
 echo.
 pause
