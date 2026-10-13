@@ -1,14 +1,12 @@
 @echo off
-REM ============================================================================
-REM Compila y empaqueta el Modulo Comercial del Showroom Evidencia GA7-220501096-AA2-EV02 | Jose Cortes Uso: compilar.bat.
-REM ============================================================================
+REM Compila el modulo y, con el argumento desplegar, lo copia a Tomcat.
+REM Uso:  compilar.bat  |  compilar.bat desplegar
 
 setlocal enabledelayedexpansion
 
-REM --- Ajuste estas dos rutas si su instalacion es distinta ----------------------
+REM Ajuste estas dos rutas si su instalacion es distinta.
 set "JAVA_INICIO=C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot"
 set "TOMCAT=C:\xampp\tomcat"
-REM ---------------------------------------------------------------------------
 
 set "PROYECTO=%~dp0"
 set "SALIDA=%PROYECTO%build"
@@ -41,7 +39,7 @@ echo  [2/5] Listando los archivos fuente
 )) > "%TEMP%\fuentes_showroom.txt"
 
 echo  [3/5] Compilando
-REM release 8 produce bytecode compatible con Java 8 en adelante, de modo que la aplicacion corre en cualquier Tomcat.
+REM Se compila con --release 8 para que el bytecode sirva desde Java 8 en adelante.
 "%JAVA_INICIO%\bin\javac.exe" -encoding UTF-8 --release 8 -nowarn ^
     -d "%SALIDA%\WEB-INF\classes" ^
     -cp "%TOMCAT%\lib\servlet-api.jar;%TOMCAT%\lib\jsp-api.jar;%PROYECTO%src\main\webapp\WEB-INF\lib\jstl-1.2.jar;%PROYECTO%src\main\webapp\WEB-INF\lib\mysql-connector-j-8.4.0.jar" ^

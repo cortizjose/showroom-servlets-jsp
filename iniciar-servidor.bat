@@ -1,20 +1,18 @@
 @echo off
-REM ============================================================================
-REM Inicia MySQL y Tomcat, y abre el modulo en el navegador.
-REM ============================================================================
+REM Inicia MySQL, Apache y Tomcat, y abre el modulo en el navegador.
+REM Define JAVA_HOME solo para esta ventana, sin tocar las variables del sistema.
 
 title Modulo Comercial del Showroom - servidor
 
-REM --- Ajuste estas rutas si su instalacion es distinta --------------------------
+REM Ajuste estas rutas si su instalacion es distinta.
 set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot"
 set "CATALINA_HOME=C:\xampp\tomcat"
 set "XAMPP=C:\xampp"
-REM ---------------------------------------------------------------------------
 
 set "APP=showroom"
 set "PUERTO=8080"
 
-REM Apache sirve phpMyAdmin.
+REM Apache sirve phpMyAdmin. Escucha en el 8081 porque el 80 lo ocupa IIS.
 set "PUERTO_APACHE=8081"
 
 echo.

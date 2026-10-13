@@ -1,7 +1,5 @@
 @echo off
-REM ============================================================================
-REM Detiene Tomcat.
-REM ============================================================================
+REM Detiene Tomcat y Apache. MySQL se deja encendido: lo usan otros proyectos.
 
 title Detener el servidor del modulo
 
