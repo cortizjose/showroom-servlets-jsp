@@ -1,0 +1,10 @@
+Estos dos .jar son la API de Servlet y la de JSP.
+
+Sirven UNICAMENTE para compilar y para que el editor reconozca las clases
+javax.servlet. NO se despliegan: en tiempo de ejecucion las aporta el propio
+Tomcat, y copiarlas a WEB-INF/lib provoca conflictos de carga de clases.
+
+Por eso estan en esta carpeta aparte y no en WEB-INF/lib, donde si van las
+dependencias reales del proyecto: JSTL y el driver de MySQL.
+
+Provienen de C:\xampp\tomcat\lib (Apache Tomcat 8.5).

@@ -12,9 +12,14 @@ src/main/resources/configuracion.local.properties
 
 # Editores e IDE
 .idea/
-.vscode/
 *.iml
 nbproject/private/
+
+# De la carpeta .vscode se versiona solo settings.json, que es configuracion
+# del proyecto y no preferencias personales: sin el, la extension de Java
+# marca como error cada import de javax.servlet.
+.vscode/*
+!.vscode/settings.json
 
 # Sistema operativo
 Thumbs.db

@@ -1,0 +1,43 @@
+{
+    // -------------------------------------------------------------------------
+    // Configuracion del proyecto para Visual Studio Code.
+    //
+    // El proyecto se compila con javac (compilar.bat) y no con Maven ni Gradle.
+    // Sin esta configuracion, la extension de Java no sabe donde estan las
+    // clases de javax.servlet ni los .jar, y marca como error cada import:
+    // aparecen subrayados rojos en todos los servlets aunque el proyecto
+    // compile perfectamente.
+    //
+    // Las rutas son relativas al proyecto, de modo que funciona en cualquier
+    // equipo sin ajustar nada.
+    // -------------------------------------------------------------------------
+
+    "java.project.sourcePaths": [
+        "src/main/java"
+    ],
+
+    "java.project.outputPath": "build/WEB-INF/classes",
+
+    "java.project.referencedLibraries": [
+        // Dependencias reales, las mismas que se despliegan
+        "src/main/webapp/WEB-INF/lib/*.jar",
+        // API de Servlet y de JSP: solo para compilar y para el editor.
+        // En ejecucion las aporta Tomcat.
+        "lib-ide/*.jar"
+    ],
+
+    // El resultado de la compilacion no tiene por que aparecer en el explorador
+    "files.exclude": {
+        "build": true
+    },
+
+    "files.encoding": "utf8",
+    "editor.lineNumbers": "on",
+    "editor.renderWhitespace": "none",
+
+    // El archivo .bat usa saltos de linea de Windows; forzarlos evita que un
+    // editor los convierta y el script deje de ejecutarse correctamente.
+    "[bat]": {
+        "files.eol": "\r\n"
+    }
+}
